@@ -111,6 +111,16 @@
         }
       }
     },
+    "Drag rows to reorder. Pick a second row to stack two values in one column.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Перетаскивайте строки, чтобы менять порядок. Выберите вторую строку, чтобы показать два значения в одном столбце."
+          }
+        }
+      }
+    },
     "Fan speed": {
       "localizations": {
         "ru": {
@@ -250,16 +260,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Переместить выше"
-          }
-        }
-      }
-    },
-    "Pick a second row to stack two values in one column.": {
-      "localizations": {
-        "ru": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Выберите вторую строку, чтобы показать два значения в одном столбце."
           }
         }
       }

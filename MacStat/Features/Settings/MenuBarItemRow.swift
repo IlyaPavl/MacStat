@@ -16,6 +16,10 @@ struct MenuBarItemRow: View {
 
     var body: some View {
         HStack {
+            Image(systemName: "line.3.horizontal")
+                .foregroundStyle(.tertiary)
+                .accessibilityHidden(true)
+
             Picker("Metric", selection: $item.primary) {
                 ForEach(SystemMetric.allCases) { metric in
                     MetricLabel(metric: metric).tag(metric)

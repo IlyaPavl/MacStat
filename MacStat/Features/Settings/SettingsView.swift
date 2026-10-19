@@ -39,11 +39,12 @@ struct SettingsView: View {
                     ForEach($settings.menuBarItems) { $item in
                         MenuBarItemRow(item: $item)
                     }
+                    .onMove(perform: settings.moveMenuBarItems)
                     Button("Add item", systemImage: "plus", action: settings.addMenuBarItem)
                 } header: {
                     Text("Items")
                 } footer: {
-                    Text("Pick a second row to stack two values in one column.")
+                    Text("Drag rows to reorder. Pick a second row to stack two values in one column.")
                         .foregroundStyle(.secondary)
                 }
             }

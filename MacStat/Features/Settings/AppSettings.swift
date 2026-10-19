@@ -94,6 +94,15 @@ final class AppSettings {
         menuBarItems.swapAt(index, index + offset)
     }
 
+    /// Переносит элементы с позиций `source` перед позицией `destination` — для перетаскивания.
+    func moveMenuBarItems(fromOffsets source: IndexSet, toOffset destination: Int) {
+        let moved = source.map { menuBarItems[$0] }
+        var remaining = menuBarItems.indices.filter { !source.contains($0) }.map { menuBarItems[$0] }
+        let insertionIndex = destination - source.count { $0 < destination }
+        remaining.insert(contentsOf: moved, at: insertionIndex)
+        menuBarItems = remaining
+    }
+
     /// Можно ли сдвинуть элемент на `offset` позиций.
     func canMoveMenuBarItem(_ item: MenuBarItem, by offset: Int) -> Bool {
         menuBarItems.firstIndex { $0.id == item.id }
