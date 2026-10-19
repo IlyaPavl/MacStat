@@ -18,11 +18,12 @@ struct PopoverHeader: View {
                 .font(.headline)
             Spacer()
             Text(chipName)
-                .font(.caption)
+                .font(.caption.weight(.medium))
                 .foregroundStyle(.secondary)
-                .padding(.horizontal, 8)
-                .padding(.vertical, 2)
-                .background(.quaternary, in: .rect(cornerRadius: 6))
+                .padding(.horizontal, 10)
+                .padding(.vertical, 4)
+                .glassEffect(.regular, in: .capsule)
         }
+        .padding(.horizontal, 4)
     }
 }
