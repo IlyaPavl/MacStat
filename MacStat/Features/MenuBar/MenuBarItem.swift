@@ -16,6 +16,12 @@ nonisolated struct MenuBarItem: Codable, Hashable, Identifiable, Sendable {
     /// Нижняя строка столбца; `nil` — одиночная метрика.
     var secondary: SystemMetric?
 
+    /// Столбец ли это; при включении снизу встаёт парная метрика.
+    var isStacked: Bool {
+        get { secondary != nil }
+        set { secondary = newValue ? (secondary ?? primary.stackPartner) : nil }
+    }
+
     /// Метрики элемента по порядку.
     var metrics: [SystemMetric] {
         [primary] + (secondary.map { [$0] } ?? [])

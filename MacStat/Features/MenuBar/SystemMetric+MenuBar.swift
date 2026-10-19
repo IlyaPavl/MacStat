@@ -17,6 +17,16 @@ extension SystemMetric {
         }
     }
 
+    /// Метрика, которую естественно показать под этой в столбце.
+    nonisolated var stackPartner: SystemMetric {
+        switch self {
+        case .cpuLoad: .cpuTemperature
+        case .cpuTemperature, .memory: .cpuLoad
+        case .fanSpeed: .gpuTemperature
+        case .gpuTemperature: .fanSpeed
+        }
+    }
+
     /// Короткий текст значения для меню-бара.
     func menuBarText(in snapshot: SystemSnapshot) -> String {
         menuBarText(for: value(in: snapshot))

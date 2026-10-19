@@ -48,7 +48,7 @@ struct AppSettingsTests {
         #expect(reloaded.menuBarDensity == .compact)
     }
 
-    @Test func addsUnusedMetricAndMovesItems() throws {
+    @Test func addsUnusedMetricAndRemovesItems() throws {
         let defaults = try #require(UserDefaults(suiteName: suiteName))
         defer { defaults.removePersistentDomain(forName: suiteName) }
         let settings = AppSettings(defaults: defaults)
@@ -58,26 +58,36 @@ struct AppSettingsTests {
         #expect(settings.menuBarItems.map(\.primary) == [.cpuLoad, .fanSpeed])
 
         let added = try #require(settings.menuBarItems.last)
-        #expect(!settings.canMoveMenuBarItem(added, by: 1))
-        settings.moveMenuBarItem(added, by: -1)
-        #expect(settings.menuBarItems.map(\.primary) == [.fanSpeed, .cpuLoad])
-
         settings.removeMenuBarItem(added)
         #expect(settings.menuBarItems.map(\.primary) == [.cpuLoad])
     }
 
-    @Test func dragMovesItems() throws {
+    @Test func movesItemsBeforeTarget() throws {
         let defaults = try #require(UserDefaults(suiteName: suiteName))
         defer { defaults.removePersistentDomain(forName: suiteName) }
         let settings = AppSettings(defaults: defaults)
         settings.menuBarItems = [.cpuLoad, .cpuTemperature, .fanSpeed, .memory].map { MenuBarItem(primary: $0) }
+        let ids = settings.menuBarItems.map(\.id)
 
-        settings.moveMenuBarItems(fromOffsets: [0], toOffset: 3)
+        settings.moveMenuBarItems([ids[0]], before: ids[3])
         #expect(settings.menuBarItems.map(\.primary) == [.cpuTemperature, .fanSpeed, .cpuLoad, .memory])
-        settings.moveMenuBarItems(fromOffsets: [3], toOffset: 0)
+        settings.moveMenuBarItems([ids[3]], before: ids[1])
         #expect(settings.menuBarItems.map(\.primary) == [.memory, .cpuTemperature, .fanSpeed, .cpuLoad])
-        settings.moveMenuBarItems(fromOffsets: [0, 2], toOffset: 4)
+        settings.moveMenuBarItems([ids[2], ids[3]], before: nil)
         #expect(settings.menuBarItems.map(\.primary) == [.cpuTemperature, .cpuLoad, .memory, .fanSpeed])
+        settings.moveMenuBarItems([ids[1]], before: ids[1])
+        #expect(settings.menuBarItems.map(\.primary) == [.cpuTemperature, .cpuLoad, .memory, .fanSpeed])
+    }
+
+    @Test func stackingPicksPartnerMetric() {
+        var item = MenuBarItem(primary: .gpuTemperature)
+        item.isStacked = true
+        #expect(item.secondary == .fanSpeed)
+        item.secondary = .memory
+        item.isStacked = true
+        #expect(item.secondary == .memory)
+        item.isStacked = false
+        #expect(item.metrics == [.gpuTemperature])
     }
 
     @Test func migratesLegacyStackedStyle() throws {

@@ -87,26 +87,15 @@ final class AppSettings {
         menuBarItems.removeAll { $0.id == item.id }
     }
 
-    /// Сдвигает элемент на `offset` позиций, если есть куда.
-    func moveMenuBarItem(_ item: MenuBarItem, by offset: Int) {
-        guard let index = menuBarItems.firstIndex(where: { $0.id == item.id }),
-              menuBarItems.indices.contains(index + offset) else { return }
-        menuBarItems.swapAt(index, index + offset)
-    }
-
-    /// Переносит элементы с позиций `source` перед позицией `destination` — для перетаскивания.
-    func moveMenuBarItems(fromOffsets source: IndexSet, toOffset destination: Int) {
-        let moved = source.map { menuBarItems[$0] }
-        var remaining = menuBarItems.indices.filter { !source.contains($0) }.map { menuBarItems[$0] }
-        let insertionIndex = destination - source.count { $0 < destination }
+    /// Переносит элементы `ids` перед элементом `targetID`, сохраняя их порядок; `nil` — в конец.
+    func moveMenuBarItems(_ ids: [MenuBarItem.ID], before targetID: MenuBarItem.ID?) {
+        let movingIDs = Set(ids)
+        if let targetID, movingIDs.contains(targetID) { return }
+        let moved = menuBarItems.filter { movingIDs.contains($0.id) }
+        var remaining = menuBarItems.filter { !movingIDs.contains($0.id) }
+        let insertionIndex = targetID.flatMap { id in remaining.firstIndex { $0.id == id } } ?? remaining.endIndex
         remaining.insert(contentsOf: moved, at: insertionIndex)
         menuBarItems = remaining
-    }
-
-    /// Можно ли сдвинуть элемент на `offset` позиций.
-    func canMoveMenuBarItem(_ item: MenuBarItem, by offset: Int) -> Bool {
-        menuBarItems.firstIndex { $0.id == item.id }
-            .map { menuBarItems.indices.contains($0 + offset) } ?? false
     }
 
     /// Сохраняет элементы меню-бара.

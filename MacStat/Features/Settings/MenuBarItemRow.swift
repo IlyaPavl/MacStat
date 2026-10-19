@@ -7,57 +7,68 @@
 
 import SwiftUI
 
-/// Строка элемента меню-бара: метрика, вторая строка столбца и действия.
+/// Строка элемента меню-бара: метрика, переключатель столбца и нижняя метрика.
 struct MenuBarItemRow: View {
-    /// Настройки — для перемещения и удаления.
+    /// Настройки — для удаления.
     @Environment(AppSettings.self) private var settings
     /// Редактируемый элемент.
     @Binding var item: MenuBarItem
 
     var body: some View {
-        HStack {
-            Image(systemName: "line.3.horizontal")
-                .foregroundStyle(.tertiary)
-                .accessibilityHidden(true)
+        VStack(alignment: .leading) {
+            HStack {
+                Image(systemName: "line.3.horizontal")
+                    .foregroundStyle(.tertiary)
+                    .accessibilityHidden(true)
 
-            Picker("Metric", selection: $item.primary) {
-                ForEach(SystemMetric.allCases) { metric in
-                    MetricLabel(metric: metric).tag(metric)
-                }
-            }
+                MetricPicker(title: "Metric", selection: $item.primary)
 
-            Picker("Second row", selection: $item.secondary) {
-                Text("Single row").tag(SystemMetric?.none)
-                Divider()
-                ForEach(SystemMetric.allCases) { metric in
-                    MetricLabel(metric: metric).tag(Optional(metric))
-                }
-            }
+                Spacer()
 
-            Menu {
-                Button("Move up", systemImage: "arrow.up") {
-                    settings.moveMenuBarItem(item, by: -1)
-                }
-                .disabled(!settings.canMoveMenuBarItem(item, by: -1))
+                Toggle("Stacked", isOn: $item.isStacked.animation())
+                    .toggleStyle(.switch)
+                    .controlSize(.small)
 
-                Button("Move down", systemImage: "arrow.down") {
-                    settings.moveMenuBarItem(item, by: 1)
-                }
-                .disabled(!settings.canMoveMenuBarItem(item, by: 1))
-
-                Divider()
-
-                Button("Remove", systemImage: "trash", role: .destructive) {
+                Button("Remove", systemImage: "minus.circle", role: .destructive) {
                     settings.removeMenuBarItem(item)
                 }
-            } label: {
-                Label("Actions", systemImage: "ellipsis")
-                    .labelStyle(.iconOnly)
+                .labelStyle(.iconOnly)
+                .buttonStyle(.borderless)
             }
-            .menuIndicator(.hidden)
-            .buttonStyle(.borderless)
-            .fixedSize()
+
+            if let secondary = item.secondary {
+                HStack {
+                    Image(systemName: "arrow.turn.down.right")
+                        .foregroundStyle(.tertiary)
+                        .accessibilityHidden(true)
+                    MetricPicker(title: "Bottom", selection: Binding {
+                        secondary
+                    } set: {
+                        item.secondary = $0
+                    })
+                }
+                .padding(.leading, 20)
+            }
+        }
+    }
+}
+
+/// Выбор метрики из всех без видимой подписи.
+private struct MetricPicker: View {
+    /// Подпись для VoiceOver.
+    let title: LocalizedStringResource
+    /// Выбранная метрика.
+    @Binding var selection: SystemMetric
+
+    var body: some View {
+        Picker(selection: $selection) {
+            ForEach(SystemMetric.allCases) { metric in
+                MetricLabel(metric: metric).tag(metric)
+            }
+        } label: {
+            Text(title)
         }
         .labelsHidden()
+        .fixedSize()
     }
 }

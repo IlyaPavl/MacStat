@@ -43,6 +43,7 @@ struct MacStatApp: App {
 
         Settings {
             SettingsView()
+                .environment(monitor)
                 .environment(settings)
                 .environment(launchAtLogin)
         }
