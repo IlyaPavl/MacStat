@@ -31,7 +31,9 @@ DMG="$BUILD_DIR/MacStat-$VERSION.dmg"
 ditto "$APP" "$STAGING/MacStat.app"
 ln -s /Applications "$STAGING/Applications"
 
-hdiutil create -volname "MacStat" -srcfolder "$STAGING" -fs HFS+ -format ULMO -ov "$DMG" >/dev/null
+rm -f "$DMG"
+diskutil image create from --format ULMO --volumeName "MacStat" "$STAGING" "$DMG" >> "$BUILD_DIR/build.log" 2>&1 \
+  || { echo "DMG creation failed, see $BUILD_DIR/build.log" >&2; exit 1; }
 rm -rf "$STAGING"
 
 echo "$DMG"
