@@ -3,130 +3,442 @@
   "strings": {
     "%@ of %@": {
       "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "%1$@ من %2$@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "%1$@ de %2$@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "%1$@ sur %2$@"
+          }
+        },
         "ru": {
           "stringUnit": {
             "state": "translated",
             "value": "%1$@ из %2$@"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "%1$@（共%2$@）"
           }
         }
       }
     },
     "%@ rpm": {
       "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "%@ د/د"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "%@ rpm"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "%@ tr/min"
+          }
+        },
         "ru": {
           "stringUnit": {
             "state": "translated",
             "value": "%@ об/мин"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "%@ rpm"
           }
         }
       }
     },
     "%lld s": {
       "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "%lld ث"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "%lld s"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "%lld s"
+          }
+        },
         "ru": {
           "stringUnit": {
             "state": "translated",
             "value": "%lld с"
           }
-        }
-      }
-    },
-    "Actions": {
-      "localizations": {
-        "ru": {
+        },
+        "zh-Hant": {
           "stringUnit": {
-            "state": "translated",
-            "value": "Действия"
+            "state": "machine_translated",
+            "value": "%lld秒"
           }
         }
       }
     },
     "Add item": {
       "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "إضافة عنصر"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Añadir elemento"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Ajouter un élément"
+          }
+        },
         "ru": {
           "stringUnit": {
             "state": "translated",
             "value": "Добавить элемент"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "新增項目"
+          }
+        }
+      }
+    },
+    "Bottom": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "أسفل"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Abajo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Bas"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Снизу"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "底部"
           }
         }
       }
     },
     "CPU load": {
       "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "حمل CPU"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Carga de la CPU"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Charge du CPU"
+          }
+        },
         "ru": {
           "stringUnit": {
             "state": "translated",
             "value": "Загрузка CPU"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "CPU負載"
           }
         }
       }
     },
     "CPU temperature": {
       "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "درجة حرارة CPU"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Temperatura de la CPU"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Température du CPU"
+          }
+        },
         "ru": {
           "stringUnit": {
             "state": "translated",
             "value": "Температура CPU"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "CPU溫度"
           }
         }
       }
     },
     "CPU: %@": {
       "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "CPU: %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "CPU: %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "CPU : %@"
+          }
+        },
         "ru": {
           "stringUnit": {
             "state": "translated",
             "value": "CPU: %@"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "CPU：%@"
           }
         }
       }
     },
     "Compact": {
       "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "مضغوط"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Compacta"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Compacte"
+          }
+        },
         "ru": {
           "stringUnit": {
             "state": "translated",
             "value": "Компактно"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "精簡"
           }
         }
       }
     },
     "Copy summary": {
       "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "نسخ الملخص"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Copiar resumen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Copier le résumé"
+          }
+        },
         "ru": {
           "stringUnit": {
             "state": "translated",
             "value": "Копировать сводку"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "拷貝摘要"
           }
         }
       }
     },
     "Density": {
       "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "الكثافة"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Densidad"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Densité"
+          }
+        },
         "ru": {
           "stringUnit": {
             "state": "translated",
             "value": "Плотность"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "密度"
+          }
         }
       }
     },
-    "Drag rows to reorder. Pick a second row to stack two values in one column.": {
+    "Drag rows to reorder. Turn on Stacked to show two values in one column.": {
       "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "اسحب الصفوف لإعادة ترتيبها. يمكنك تشغيل خيار مكدّس لعرض قيمتين في عمود واحد."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Arrastra las filas para reordenarlas. Activa «Apilado» para mostrar dos valores en una columna."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Faites glisser les lignes pour les réorganiser. Activez « Empilé » pour afficher deux valeurs dans une colonne."
+          }
+        },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Перетаскивайте строки, чтобы менять порядок. Выберите вторую строку, чтобы показать два значения в одном столбце."
+            "value": "Перетаскивайте строки, чтобы менять порядок. Включите «Столбец», чтобы показать два значения друг над другом."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "拖移列即可重新排序。開啟「堆疊」可在同一欄顯示兩個數值。"
           }
         }
       }
     },
     "Fan speed": {
       "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "سرعة المروحة"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Velocidad del ventilador"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Vitesse du ventilateur"
+          }
+        },
         "ru": {
           "stringUnit": {
             "state": "translated",
             "value": "Вентилятор"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "風扇轉速"
           }
         }
       }
@@ -136,150 +448,578 @@
     },
     "GPU temperature": {
       "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "درجة حرارة GPU"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Temperatura de la GPU"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Température du GPU"
+          }
+        },
         "ru": {
           "stringUnit": {
             "state": "translated",
             "value": "Температура GPU"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "GPU溫度"
           }
         }
       }
     },
     "GPU: %@": {
       "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "GPU: %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "GPU: %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "GPU : %@"
+          }
+        },
         "ru": {
           "stringUnit": {
             "state": "translated",
             "value": "GPU: %@"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "GPU：%@"
           }
         }
       }
     },
     "General": {
       "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "عام"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "General"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Général"
+          }
+        },
         "ru": {
           "stringUnit": {
             "state": "translated",
             "value": "Основные"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "一般"
           }
         }
       }
     },
     "Icon only": {
       "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "الأيقونة فقط"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Solo icono"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Icône uniquement"
+          }
+        },
         "ru": {
           "stringUnit": {
             "state": "translated",
             "value": "Только иконка"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "僅圖示"
           }
         }
       }
     },
     "Icons and values": {
       "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "الأيقونات والقيم"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Iconos y valores"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Icônes et valeurs"
+          }
+        },
         "ru": {
           "stringUnit": {
             "state": "translated",
             "value": "Иконки и значения"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "圖示與數值"
           }
         }
       }
     },
     "Items": {
       "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "العناصر"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Elementos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Éléments"
+          }
+        },
         "ru": {
           "stringUnit": {
             "state": "translated",
             "value": "Элементы"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "項目"
+          }
+        }
+      }
+    },
+    "Language": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اللغة"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Idioma"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Langue"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Язык"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "語言"
           }
         }
       }
     },
     "Launch at login": {
       "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "التشغيل عند تسجيل الدخول"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Abrir al iniciar sesión"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Ouvrir à l’ouverture de session"
+          }
+        },
         "ru": {
           "stringUnit": {
             "state": "translated",
             "value": "Запускать при входе"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "登入時啟動"
           }
         }
       }
     },
     "Memory used": {
       "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "الذاكرة المستخدمة"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Memoria usada"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Mémoire utilisée"
+          }
+        },
         "ru": {
           "stringUnit": {
             "state": "translated",
             "value": "Занятая память"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "已使用記憶體"
           }
         }
       }
     },
     "Memory: %@ (%@ of %@)": {
       "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "الذاكرة: %1$@ (%2$@ من %3$@)"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Memoria: %1$@ (%2$@ de %3$@)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Mémoire : %1$@ (%2$@ sur %3$@)"
+          }
+        },
         "ru": {
           "stringUnit": {
             "state": "translated",
             "value": "Память: %1$@ (%2$@ из %3$@)"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "記憶體：%1$@（已使用%2$@，共%3$@）"
           }
         }
       }
     },
     "Menu bar": {
       "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "شريط القائمة"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Barra de menús"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Barre des menus"
+          }
+        },
         "ru": {
           "stringUnit": {
             "state": "translated",
             "value": "Строка меню"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "選單列"
+          }
+        }
+      }
+    },
+    "Menu bar preview": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "معاينة شريط القائمة"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Vista previa de la barra de menús"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Aperçu de la barre des menus"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Превью меню-бара"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "選單列預覽"
           }
         }
       }
     },
     "Metric": {
       "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "المقياس"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Métrica"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Mesure"
+          }
+        },
         "ru": {
           "stringUnit": {
             "state": "translated",
             "value": "Метрика"
           }
-        }
-      }
-    },
-    "Move down": {
-      "localizations": {
-        "ru": {
+        },
+        "zh-Hant": {
           "stringUnit": {
-            "state": "translated",
-            "value": "Переместить ниже"
-          }
-        }
-      }
-    },
-    "Move up": {
-      "localizations": {
-        "ru": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Переместить выше"
+            "state": "machine_translated",
+            "value": "指標"
           }
         }
       }
     },
     "Quit MacStat": {
       "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "إنهاء MacStat"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Salir de MacStat"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Quitter MacStat"
+          }
+        },
         "ru": {
           "stringUnit": {
             "state": "translated",
             "value": "Завершить MacStat"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "結束MacStat"
+          }
+        }
+      }
+    },
+    "Relaunch": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إعادة التشغيل"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reiniciar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Relancer"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Перезапустить"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重新啟動"
+          }
+        }
+      }
+    },
+    "Relaunch MacStat to apply the language.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "أعد تشغيل MacStat لتطبيق اللغة."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reinicia MacStat para aplicar el idioma."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Relancez MacStat pour appliquer la langue."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Перезапустите MacStat, чтобы сменить язык."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重新啟動 MacStat 以套用語言。"
           }
         }
       }
     },
     "Remove": {
       "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "إزالة"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Eliminar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Supprimer"
+          }
+        },
         "ru": {
           "stringUnit": {
             "state": "translated",
             "value": "Удалить"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "移除"
           }
         }
       }
@@ -287,72 +1027,240 @@
     "Sample": {
       "shouldTranslate": false
     },
-    "Second row": {
-      "localizations": {
-        "ru": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Вторая строка"
-          }
-        }
-      }
-    },
     "Settings…": {
       "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "الإعدادات…"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Ajustes…"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Réglages…"
+          }
+        },
         "ru": {
           "stringUnit": {
             "state": "translated",
             "value": "Настройки…"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "設定⋯"
+          }
         }
       }
     },
-    "Single row": {
+    "Stacked": {
       "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "مكدّس"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Apilado"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Empilé"
+          }
+        },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Одна строка"
+            "value": "Столбец"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "堆疊"
           }
         }
       }
     },
     "Standard": {
       "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "قياسي"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Estándar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Standard"
+          }
+        },
         "ru": {
           "stringUnit": {
             "state": "translated",
             "value": "Стандартно"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "標準"
           }
         }
       }
     },
     "Style": {
       "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "النمط"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Estilo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Style"
+          }
+        },
         "ru": {
           "stringUnit": {
             "state": "translated",
             "value": "Стиль"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "樣式"
+          }
+        }
+      }
+    },
+    "System": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "النظام"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sistema"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Système"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Системный"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "系統"
           }
         }
       }
     },
     "Two rows": {
       "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "صفّان"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Dos filas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Deux lignes"
+          }
+        },
         "ru": {
           "stringUnit": {
             "state": "translated",
             "value": "Две строки"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "兩列"
           }
         }
       }
     },
     "Update interval": {
       "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "فاصل التحديث"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Intervalo de actualización"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Intervalle de mise à jour"
+          }
+        },
         "ru": {
           "stringUnit": {
             "state": "translated",
             "value": "Интервал обновления"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "更新間隔"
           }
         }
       }
@@ -362,14 +1270,38 @@
     },
     "fan %@ rpm": {
       "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "المروحة %@ دورة/د"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "ventilador %@ rpm"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "ventilateur %@ tr/min"
+          }
+        },
         "ru": {
           "stringUnit": {
             "state": "translated",
             "value": "вентилятор %@ об/мин"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "風扇%@ rpm"
+          }
         }
       }
     }
   },
-  "version": "1.0"
+  "version": "1.3"
 }
