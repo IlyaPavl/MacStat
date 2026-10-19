@@ -273,6 +273,40 @@
         }
       }
     },
+    "Click an item to edit it, drag to reorder.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "انقر على عنصر لتعديله، أو اسحبه لإعادة الترتيب."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haz clic en un elemento para editarlo o arrástralo para reordenarlo."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cliquez sur un élément pour le modifier, faites-le glisser pour le déplacer."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Нажмите на элемент, чтобы изменить его, или перетащите, чтобы поменять порядок."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "按一下項目即可編輯，拖移即可重新排序。"
+          }
+        }
+      }
+    },
     "Compact": {
       "localizations": {
         "ar": {
@@ -371,40 +405,6 @@
           "stringUnit": {
             "state": "machine_translated",
             "value": "密度"
-          }
-        }
-      }
-    },
-    "Drag rows to reorder. Turn on Stacked to show two values in one column.": {
-      "localizations": {
-        "ar": {
-          "stringUnit": {
-            "state": "machine_translated",
-            "value": "اسحب الصفوف لإعادة ترتيبها. يمكنك تشغيل خيار مكدّس لعرض قيمتين في عمود واحد."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "machine_translated",
-            "value": "Arrastra las filas para reordenarlas. Activa «Apilado» para mostrar dos valores en una columna."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "machine_translated",
-            "value": "Faites glisser les lignes pour les réorganiser. Activez « Empilé » pour afficher deux valeurs dans une colonne."
-          }
-        },
-        "ru": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Перетаскивайте строки, чтобы менять порядок. Включите «Столбец», чтобы показать два значения друг над другом."
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "machine_translated",
-            "value": "拖移列即可重新排序。開啟「堆疊」可在同一欄顯示兩個數值。"
           }
         }
       }
@@ -718,6 +718,40 @@
         }
       }
     },
+    "Layout": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "التخطيط"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disposición"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disposition"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вид"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "版面"
+          }
+        }
+      }
+    },
     "Memory used": {
       "localizations": {
         "ar": {
@@ -884,6 +918,40 @@
           "stringUnit": {
             "state": "machine_translated",
             "value": "指標"
+          }
+        }
+      }
+    },
+    "One metric": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "مقياس واحد"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Una métrica"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Une mesure"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Одна метрика"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "單一指標"
           }
         }
       }
@@ -1061,40 +1129,6 @@
         }
       }
     },
-    "Stacked": {
-      "localizations": {
-        "ar": {
-          "stringUnit": {
-            "state": "machine_translated",
-            "value": "مكدّس"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "machine_translated",
-            "value": "Apilado"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "machine_translated",
-            "value": "Empilé"
-          }
-        },
-        "ru": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Столбец"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "machine_translated",
-            "value": "堆疊"
-          }
-        }
-      }
-    },
     "Standard": {
       "localizations": {
         "ar": {
@@ -1193,6 +1227,74 @@
           "stringUnit": {
             "state": "translated",
             "value": "系統"
+          }
+        }
+      }
+    },
+    "Top": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "أعلى"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arriba"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haut"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сверху"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "頂部"
+          }
+        }
+      }
+    },
+    "Two metrics": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "مقياسان"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dos métricas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deux mesures"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Две метрики"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "兩個指標"
           }
         }
       }

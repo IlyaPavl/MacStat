@@ -75,16 +75,22 @@ final class AppSettings {
         menuBarStyle.showsValues ? menuBarItems : []
     }
 
-    /// Добавляет одиночную метрику — первую, которой ещё нет в значке.
-    func addMenuBarItem() {
+    /// Добавляет одиночную метрику — первую, которой ещё нет в значке; возвращает новый элемент.
+    @discardableResult
+    func addMenuBarItem() -> MenuBarItem {
         let usedMetrics = Set(menuBarItems.flatMap(\.metrics))
         let metric = SystemMetric.allCases.first { !usedMetrics.contains($0) } ?? .cpuLoad
-        menuBarItems.append(MenuBarItem(primary: metric))
+        let item = MenuBarItem(primary: metric)
+        menuBarItems.append(item)
+        return item
     }
 
-    /// Удаляет элемент.
-    func removeMenuBarItem(_ item: MenuBarItem) {
-        menuBarItems.removeAll { $0.id == item.id }
+    /// Удаляет элемент; возвращает соседа, вставшего на его место, — его удобно выбрать следующим.
+    @discardableResult
+    func removeMenuBarItem(_ id: MenuBarItem.ID) -> MenuBarItem.ID? {
+        guard let index = menuBarItems.firstIndex(where: { $0.id == id }) else { return nil }
+        menuBarItems.remove(at: index)
+        return menuBarItems.indices.contains(index) ? menuBarItems[index].id : menuBarItems.last?.id
     }
 
     /// Переносит элементы `ids` перед элементом `targetID`, сохраняя их порядок; `nil` — в конец.

@@ -38,19 +38,7 @@ struct SettingsView: View {
             }
 
             if settings.menuBarStyle.showsValues {
-                Section {
-                    MenuBarPreview()
-                    ForEach($settings.menuBarItems) { $item in
-                        MenuBarItemRow(item: $item)
-                    }
-                    .reorderable()
-                    Button("Add item", systemImage: "plus", action: settings.addMenuBarItem)
-                } header: {
-                    Text("Items")
-                } footer: {
-                    Text("Drag rows to reorder. Turn on Stacked to show two values in one column.")
-                        .foregroundStyle(.secondary)
-                }
+                MenuBarItemsSection()
             }
 
             Section("General") {
@@ -86,15 +74,6 @@ struct SettingsView: View {
                         .font(.caption)
                         .foregroundStyle(.red)
                 }
-            }
-        }
-        .reorderContainer(for: MenuBarItem.self) { difference in
-            let targetID: MenuBarItem.ID? = switch difference.destination.position {
-            case .before(let id): id
-            case .end: nil
-            }
-            withAnimation {
-                settings.moveMenuBarItems(difference.sources, before: targetID)
             }
         }
         .formStyle(.grouped)

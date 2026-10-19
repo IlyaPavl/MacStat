@@ -54,12 +54,14 @@ struct AppSettingsTests {
         let settings = AppSettings(defaults: defaults)
         settings.menuBarItems = [MenuBarItem(primary: .cpuLoad, secondary: .cpuTemperature)]
 
-        settings.addMenuBarItem()
+        let added = settings.addMenuBarItem()
         #expect(settings.menuBarItems.map(\.primary) == [.cpuLoad, .fanSpeed])
+        #expect(settings.menuBarItems.last == added)
 
-        let added = try #require(settings.menuBarItems.last)
-        settings.removeMenuBarItem(added)
-        #expect(settings.menuBarItems.map(\.primary) == [.cpuLoad])
+        let first = try #require(settings.menuBarItems.first)
+        #expect(settings.removeMenuBarItem(first.id) == added.id)
+        #expect(settings.removeMenuBarItem(added.id) == nil)
+        #expect(settings.menuBarItems.isEmpty)
     }
 
     @Test func movesItemsBeforeTarget() throws {
