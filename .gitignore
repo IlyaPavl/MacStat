@@ -1,5 +1,15 @@
-build/
+# macOS
 .DS_Store
+
+# Xcode
+build/
+DerivedData/
 xcuserdata/
+*.xcuserstate
 *.profraw
+
+# Release artifacts
+*.dmg
+
+# Local tooling
 .claude/
