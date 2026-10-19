@@ -16,6 +16,8 @@ struct MacStatApp: App {
     @State private var monitor: MonitorViewModel
     /// Модель автозапуска.
     @State private var launchAtLogin: LaunchAtLoginViewModel
+    /// Модель выбора языка.
+    @State private var language: LanguageViewModel
 
     /// Собирает зависимости и запускает мониторинг.
     init() {
@@ -29,6 +31,15 @@ struct MacStatApp: App {
         _settings = State(initialValue: settings)
         _monitor = State(initialValue: monitor)
         _launchAtLogin = State(initialValue: LaunchAtLoginViewModel(service: MainAppLaunchAtLoginService()))
+        let languageStore = UserDefaultsAppLanguageStore(
+            defaults: .standard,
+            domainName: Bundle.main.bundleIdentifier ?? ProcessInfo.processInfo.processName
+        )
+        _language = State(initialValue: LanguageViewModel(
+            store: languageStore,
+            localizations: Bundle.main.localizations,
+            relauncher: WorkspaceAppRelauncher()
+        ))
     }
 
     var body: some Scene {
@@ -46,6 +57,7 @@ struct MacStatApp: App {
                 .environment(monitor)
                 .environment(settings)
                 .environment(launchAtLogin)
+                .environment(language)
         }
     }
 }

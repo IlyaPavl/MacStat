@@ -13,10 +13,13 @@ struct SettingsView: View {
     @Environment(AppSettings.self) private var settings
     /// Модель автозапуска.
     @Environment(LaunchAtLoginViewModel.self) private var launchAtLogin
+    /// Модель выбора языка.
+    @Environment(LanguageViewModel.self) private var language
 
     var body: some View {
         @Bindable var settings = settings
         @Bindable var launchAtLogin = launchAtLogin
+        @Bindable var language = language
         Form {
             Section("Menu bar") {
                 Picker("Style", selection: $settings.menuBarStyle) {
@@ -58,6 +61,25 @@ struct SettingsView: View {
                 }
                 .pickerStyle(.segmented)
 
+                Picker("Language", selection: $language.selection) {
+                    ForEach(language.languages) { option in
+                        Text(verbatim: option.displayName).tag(option)
+                    }
+                }
+
+                if language.needsRelaunch {
+                    LabeledContent("Relaunch MacStat to apply the language.") {
+                        Button("Relaunch") {
+                            Task { await language.relaunch() }
+                        }
+                    }
+                }
+                if let errorMessage = language.errorMessage {
+                    Text(errorMessage)
+                        .font(.caption)
+                        .foregroundStyle(.red)
+                }
+
                 Toggle("Launch at login", isOn: $launchAtLogin.isToggleOn)
                 if let errorMessage = launchAtLogin.errorMessage {
                     Text(errorMessage)
@@ -79,6 +101,7 @@ struct SettingsView: View {
         .frame(width: 400)
         .fixedSize(horizontal: false, vertical: true)
         .animation(.default, value: settings.menuBarStyle)
+        .animation(.default, value: language.needsRelaunch)
         .animation(.default, value: settings.menuBarItems.map(\.id))
         .onAppear(perform: launchAtLogin.reloadStatus)
     }
