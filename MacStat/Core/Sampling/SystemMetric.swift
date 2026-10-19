@@ -1,5 +1,5 @@
 //
-//  MenuBarMetric.swift
+//  SystemMetric.swift
 //  MacStat
 //
 //  Created by Ilya Pavlov on 19.10.2026.
@@ -7,8 +7,8 @@
 
 import Foundation
 
-/// Метрика, которую можно вывести в меню-бар.
-enum MenuBarMetric: String, CaseIterable, Identifiable {
+/// Метрика системы, которую показывает приложение.
+nonisolated enum SystemMetric: String, CaseIterable, Identifiable, Sendable {
     /// Загрузка CPU.
     case cpuLoad
     /// Температура CPU.
@@ -23,7 +23,7 @@ enum MenuBarMetric: String, CaseIterable, Identifiable {
     /// Идентификатор для `ForEach`.
     var id: Self { self }
 
-    /// Название в настройках.
+    /// Название для интерфейса.
     var title: LocalizedStringResource {
         switch self {
         case .cpuLoad: "CPU load"
@@ -31,17 +31,6 @@ enum MenuBarMetric: String, CaseIterable, Identifiable {
         case .fanSpeed: "Fan speed"
         case .gpuTemperature: "GPU temperature"
         case .memory: "Memory used"
-        }
-    }
-
-    /// Подпись над значением в двухстрочном стиле; не локализуется.
-    var caption: String {
-        switch self {
-        case .cpuLoad: "CPU"
-        case .cpuTemperature: "CPU°"
-        case .fanSpeed: "FAN"
-        case .gpuTemperature: "GPU°"
-        case .memory: "RAM"
         }
     }
 
@@ -53,6 +42,17 @@ enum MenuBarMetric: String, CaseIterable, Identifiable {
         case .fanSpeed: "fan"
         case .gpuTemperature: "square.stack.3d.up"
         case .memory: "memorychip"
+        }
+    }
+
+    /// Числовое значение метрики в замере: доли 0...1, °C или об/мин.
+    func value(in snapshot: SystemSnapshot) -> Double? {
+        switch self {
+        case .cpuLoad: snapshot.cpuLoad
+        case .cpuTemperature: snapshot.cpuTemperature
+        case .fanSpeed: snapshot.fanSpeed
+        case .gpuTemperature: snapshot.gpuTemperature
+        case .memory: snapshot.memoryUsage?.usedFraction
         }
     }
 }

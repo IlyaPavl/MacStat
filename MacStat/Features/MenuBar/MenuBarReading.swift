@@ -8,10 +8,10 @@
 /// Готовый текст одной метрики для меню-бара.
 struct MenuBarReading: Equatable, Identifiable {
     /// Метрика.
-    let metric: MenuBarMetric
+    let metric: SystemMetric
     /// Отформатированное значение.
     let value: String
 
     /// Идентификатор — сама метрика.
-    var id: MenuBarMetric { metric }
+    var id: SystemMetric { metric }
 }

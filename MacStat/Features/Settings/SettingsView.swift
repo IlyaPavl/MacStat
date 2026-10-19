@@ -25,16 +25,30 @@ struct SettingsView: View {
                     }
                 }
 
-                ForEach(MenuBarMetric.allCases) { metric in
-                    Toggle(isOn: $settings[isShown: metric]) {
-                        Label {
-                            Text(metric.title)
-                        } icon: {
-                            Image(systemName: metric.symbolName)
-                        }
+                Picker("Density", selection: $settings.menuBarDensity) {
+                    ForEach(MenuBarDensity.allCases) { density in
+                        Text(density.title).tag(density)
                     }
                 }
+                .pickerStyle(.segmented)
                 .disabled(!settings.menuBarStyle.showsValues)
+
+                switch settings.menuBarStyle {
+                case .stacked:
+                    MetricPicker(title: "Top row", selection: $settings.stackedTopMetric)
+                    MetricPicker(title: "Bottom row", selection: $settings.stackedBottomMetric)
+                case .twoRows, .iconsAndValues, .iconOnly:
+                    ForEach(SystemMetric.allCases) { metric in
+                        Toggle(isOn: $settings[isShown: metric]) {
+                            Label {
+                                Text(metric.title)
+                            } icon: {
+                                Image(systemName: metric.symbolName)
+                            }
+                        }
+                    }
+                    .disabled(!settings.menuBarStyle.showsValues)
+                }
             }
 
             Section("General") {
@@ -54,8 +68,9 @@ struct SettingsView: View {
             }
         }
         .formStyle(.grouped)
-        .frame(width: 380)
+        .frame(width: 400)
         .fixedSize(horizontal: false, vertical: true)
+        .animation(.default, value: settings.menuBarStyle)
         .onAppear(perform: launchAtLogin.reloadStatus)
     }
 }

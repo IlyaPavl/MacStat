@@ -16,10 +16,10 @@ final class MonitorViewModel {
 
     /// Последний замер.
     private(set) var snapshot: SystemSnapshot = .empty
-    /// История загрузки CPU.
-    private(set) var cpuLoadHistory = MetricHistory(capacity: historyCapacity)
-    /// История температуры GPU.
-    private(set) var gpuTemperatureHistory = MetricHistory(capacity: historyCapacity)
+    /// История значений каждой метрики для графиков.
+    private(set) var histories = Dictionary(
+        uniqueKeysWithValues: SystemMetric.allCases.map { ($0, MetricHistory(capacity: historyCapacity)) }
+    )
     /// Текст для меню-бара; меняется только при изменении текста.
     private(set) var menuBarReadings: [MenuBarReading] = []
 
@@ -61,7 +61,7 @@ final class MonitorViewModel {
                 }
             },
             Task { [weak self] in
-                for await _ in Observations({ settings.menuBarMetrics }) {
+                for await _ in Observations({ settings.visibleMenuBarMetrics }) {
                     guard let self else { return }
                     refreshMenuBarReadings()
                 }
@@ -81,6 +81,11 @@ final class MonitorViewModel {
         if !isSamplingNeeded {
             stopSampling()
         }
+    }
+
+    /// История метрики для графика.
+    func history(for metric: SystemMetric) -> MetricHistory {
+        histories[metric] ?? MetricHistory(capacity: Self.historyCapacity)
     }
 
     /// Текстовая сводка для буфера обмена.
@@ -136,31 +141,21 @@ final class MonitorViewModel {
     /// Сохраняет новый замер и дополняет историю.
     private func record(_ newSnapshot: SystemSnapshot) {
         snapshot = newSnapshot
-        if let value = newSnapshot.cpuLoad { cpuLoadHistory.append(value) }
-        if let value = newSnapshot.gpuTemperature { gpuTemperatureHistory.append(value) }
+        for metric in SystemMetric.allCases {
+            if let value = metric.value(in: newSnapshot) {
+                histories[metric]?.append(value)
+            }
+        }
         refreshMenuBarReadings()
     }
 
-    /// Пересобирает текст меню-бара по включённым метрикам.
+    /// Пересобирает текст меню-бара по видимым метрикам.
     private func refreshMenuBarReadings() {
-        let readings = settings.menuBarStyle.showsValues
-            ? MenuBarMetric.allCases
-                .filter(settings.isShown)
-                .map { MenuBarReading(metric: $0, value: menuBarText(for: $0)) }
-            : []
+        let readings = settings.visibleMenuBarMetrics.map {
+            MenuBarReading(metric: $0, value: $0.menuBarText(in: snapshot))
+        }
         if readings != menuBarReadings {
             menuBarReadings = readings
-        }
-    }
-
-    /// Короткий текст метрики для меню-бара.
-    private func menuBarText(for metric: MenuBarMetric) -> String {
-        switch metric {
-        case .cpuLoad: MetricFormatter.percent(snapshot.cpuLoad)
-        case .cpuTemperature: MetricFormatter.shortTemperature(snapshot.cpuTemperature)
-        case .fanSpeed: MetricFormatter.shortFanSpeed(snapshot.fanSpeed)
-        case .gpuTemperature: MetricFormatter.shortTemperature(snapshot.gpuTemperature)
-        case .memory: MetricFormatter.percent(snapshot.memoryUsage?.usedFraction)
         }
     }
 }

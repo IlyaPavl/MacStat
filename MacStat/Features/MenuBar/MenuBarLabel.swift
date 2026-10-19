@@ -12,11 +12,15 @@ import SwiftUI
 struct MenuBarLabel: View {
     /// Источник значений.
     let monitor: MonitorViewModel
-    /// Источник стиля.
+    /// Источник стиля и плотности.
     let settings: AppSettings
 
     var body: some View {
-        if let image = MenuBarImageFactory.makeImage(style: settings.menuBarStyle, readings: monitor.menuBarReadings) {
+        if let image = MenuBarImageFactory.makeImage(
+            style: settings.menuBarStyle,
+            density: settings.menuBarDensity,
+            readings: monitor.menuBarReadings
+        ) {
             Image(nsImage: image)
         } else {
             Image(systemName: MenuBarImageFactory.fallbackSymbolName)

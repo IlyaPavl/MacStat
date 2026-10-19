@@ -15,8 +15,14 @@ final class AppSettings {
     private enum Key {
         /// Стиль меню-бара.
         static let menuBarStyle = "menuBarStyle"
+        /// Плотность меню-бара.
+        static let menuBarDensity = "menuBarDensity"
         /// Метрики в меню-баре.
         static let menuBarMetrics = "menuBarMetrics"
+        /// Верхняя метрика комбинированного столбца.
+        static let stackedTopMetric = "stackedTopMetric"
+        /// Нижняя метрика комбинированного столбца.
+        static let stackedBottomMetric = "stackedBottomMetric"
         /// Интервал обновления.
         static let updateInterval = "updateInterval"
     }
@@ -26,9 +32,24 @@ final class AppSettings {
         didSet { defaults.set(menuBarStyle.rawValue, forKey: Key.menuBarStyle) }
     }
 
-    /// Метрики, показанные в меню-баре.
-    var menuBarMetrics: Set<MenuBarMetric> {
+    /// Расстояния между элементами значка.
+    var menuBarDensity: MenuBarDensity {
+        didSet { defaults.set(menuBarDensity.rawValue, forKey: Key.menuBarDensity) }
+    }
+
+    /// Метрики, показанные в стилях с несколькими колонками.
+    var menuBarMetrics: Set<SystemMetric> {
         didSet { defaults.set(menuBarMetrics.map(\.rawValue).sorted(), forKey: Key.menuBarMetrics) }
+    }
+
+    /// Верхняя строка комбинированного столбца.
+    var stackedTopMetric: SystemMetric {
+        didSet { defaults.set(stackedTopMetric.rawValue, forKey: Key.stackedTopMetric) }
+    }
+
+    /// Нижняя строка комбинированного столбца.
+    var stackedBottomMetric: SystemMetric {
+        didSet { defaults.set(stackedBottomMetric.rawValue, forKey: Key.stackedBottomMetric) }
     }
 
     /// Как часто снимать замеры.
@@ -42,19 +63,31 @@ final class AppSettings {
     /// Загружает настройки; отсутствующие берутся по умолчанию.
     init(defaults: UserDefaults) {
         self.defaults = defaults
-        menuBarStyle = defaults.string(forKey: Key.menuBarStyle).flatMap(MenuBarStyle.init(rawValue:)) ?? .compact
+        menuBarStyle = defaults.string(forKey: Key.menuBarStyle).flatMap(MenuBarStyle.init(rawValue:)) ?? .twoRows
+        menuBarDensity = defaults.string(forKey: Key.menuBarDensity).flatMap(MenuBarDensity.init(rawValue:)) ?? .standard
         menuBarMetrics = defaults.stringArray(forKey: Key.menuBarMetrics)
-            .map { Set($0.compactMap(MenuBarMetric.init(rawValue:))) } ?? Set(MenuBarMetric.allCases)
+            .map { Set($0.compactMap(SystemMetric.init(rawValue:))) } ?? Set(SystemMetric.allCases)
+        stackedTopMetric = defaults.string(forKey: Key.stackedTopMetric).flatMap(SystemMetric.init(rawValue:)) ?? .cpuTemperature
+        stackedBottomMetric = defaults.string(forKey: Key.stackedBottomMetric).flatMap(SystemMetric.init(rawValue:)) ?? .cpuLoad
         updateInterval = UpdateInterval(rawValue: defaults.integer(forKey: Key.updateInterval)) ?? .twoSeconds
     }
 
-    /// Показана ли метрика в меню-баре.
-    func isShown(_ metric: MenuBarMetric) -> Bool {
+    /// Метрики, которые сейчас выводятся в меню-бар, по порядку.
+    var visibleMenuBarMetrics: [SystemMetric] {
+        switch menuBarStyle {
+        case .twoRows, .iconsAndValues: SystemMetric.allCases.filter(isShown)
+        case .stacked: [stackedTopMetric, stackedBottomMetric]
+        case .iconOnly: []
+        }
+    }
+
+    /// Включена ли метрика для стилей с несколькими колонками.
+    func isShown(_ metric: SystemMetric) -> Bool {
         menuBarMetrics.contains(metric)
     }
 
     /// Вкл/выкл метрики для `Toggle`: `$settings[isShown: metric]`.
-    subscript(isShown metric: MenuBarMetric) -> Bool {
+    subscript(isShown metric: SystemMetric) -> Bool {
         get { isShown(metric) }
         set {
             if newValue {

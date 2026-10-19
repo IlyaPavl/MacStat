@@ -9,8 +9,10 @@ import Foundation
 
 /// Вид значка в меню-баре.
 enum MenuBarStyle: String, CaseIterable, Identifiable {
-    /// Две строки: подпись и значение.
-    case compact
+    /// Колонки «подпись над значением».
+    case twoRows = "compact"
+    /// Одна колонка из двух значений без подписей.
+    case stacked
     /// Иконка и значение в строку.
     case iconsAndValues
     /// Только иконка приложения.
@@ -22,7 +24,8 @@ enum MenuBarStyle: String, CaseIterable, Identifiable {
     /// Название в настройках.
     var title: LocalizedStringResource {
         switch self {
-        case .compact: "Two rows"
+        case .twoRows: "Two rows"
+        case .stacked: "Stacked column"
         case .iconsAndValues: "Icons and values"
         case .iconOnly: "Icon only"
         }
