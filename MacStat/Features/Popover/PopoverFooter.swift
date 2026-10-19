@@ -10,6 +10,9 @@ import SwiftUI
 
 /// Нижняя панель поповера: интервал, копирование, настройки, выход.
 struct PopoverFooter: View {
+    /// Расстояние между кнопками.
+    private static let buttonSpacing: CGFloat = 8
+
     /// Модель мониторинга.
     @Environment(MonitorViewModel.self) private var viewModel
     /// Настройки приложения.
@@ -19,29 +22,35 @@ struct PopoverFooter: View {
 
     var body: some View {
         @Bindable var settings = settings
-        HStack(spacing: 12) {
-            Picker(selection: $settings.updateInterval) {
-                ForEach(UpdateInterval.allCases) { interval in
-                    Text(interval.title).tag(interval)
+        GlassEffectContainer(spacing: Self.buttonSpacing) {
+            HStack(spacing: Self.buttonSpacing) {
+                Menu {
+                    Picker("Update interval", selection: $settings.updateInterval) {
+                        ForEach(UpdateInterval.allCases) { interval in
+                            Text(interval.title).tag(interval)
+                        }
+                    }
+                    .pickerStyle(.inline)
+                } label: {
+                    Label("Update interval", systemImage: "arrow.clockwise")
                 }
-            } label: {
-                Image(systemName: "arrow.clockwise")
-            }
-            .pickerStyle(.menu)
-            .fixedSize()
-            .help(Text("Update interval"))
+                .menuStyle(.button)
+                .menuIndicator(.hidden)
+                .help(Text("Update interval"))
 
-            Spacer()
+                Spacer()
 
-            Button("Copy summary", systemImage: "doc.on.doc", action: copySummary)
-            Button("Settings…", systemImage: "gearshape", action: showSettingsWindow)
-            Button("Quit MacStat", systemImage: "power") {
-                NSApplication.shared.terminate(nil)
+                Button("Copy summary", systemImage: "doc.on.doc", action: copySummary)
+                    .help(Text("Copy summary"))
+                Button("Settings…", systemImage: "gearshape", action: showSettingsWindow)
+                    .help(Text("Settings…"))
+                Button("Quit MacStat", systemImage: "power") {
+                    NSApplication.shared.terminate(nil)
+                }
+                .help(Text("Quit MacStat"))
             }
+            .buttonStyle(GlassIconButtonStyle())
         }
-        .buttonStyle(.borderless)
-        .labelStyle(.iconOnly)
-        .foregroundStyle(.secondary)
     }
 
     /// Копирует сводку в буфер обмена.
