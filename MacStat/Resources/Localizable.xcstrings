@@ -31,12 +31,12 @@
         }
       }
     },
-    "Average across sensors": {
+    "Bottom row": {
       "localizations": {
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Средняя по датчикам"
+            "value": "Нижняя строка"
           }
         }
       }
@@ -71,12 +71,32 @@
         }
       }
     },
+    "Compact": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Компактно"
+          }
+        }
+      }
+    },
     "Copy summary": {
       "localizations": {
         "ru": {
           "stringUnit": {
             "state": "translated",
             "value": "Копировать сводку"
+          }
+        }
+      }
+    },
+    "Density": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Плотность"
           }
         }
       }
@@ -104,12 +124,12 @@
         }
       }
     },
-    "GPU: %@C": {
+    "GPU: %@": {
       "localizations": {
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "GPU: %@C"
+            "value": "GPU: %@"
           }
         }
       }
@@ -120,16 +140,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Основные"
-          }
-        }
-      }
-    },
-    "Graphics": {
-      "localizations": {
-        "ru": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Графика"
           }
         }
       }
@@ -164,16 +174,6 @@
         }
       }
     },
-    "Memory": {
-      "localizations": {
-        "ru": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Память"
-          }
-        }
-      }
-    },
     "Memory used": {
       "localizations": {
         "ru": {
@@ -204,16 +204,6 @@
         }
       }
     },
-    "Processor": {
-      "localizations": {
-        "ru": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Процессор"
-          }
-        }
-      }
-    },
     "Quit MacStat": {
       "localizations": {
         "ru": {
@@ -237,12 +227,42 @@
         }
       }
     },
+    "Stacked column": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Комбинированный столбец"
+          }
+        }
+      }
+    },
+    "Standard": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Стандартно"
+          }
+        }
+      }
+    },
     "Style": {
       "localizations": {
         "ru": {
           "stringUnit": {
             "state": "translated",
             "value": "Стиль"
+          }
+        }
+      }
+    },
+    "Top row": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Верхняя строка"
           }
         }
       }
