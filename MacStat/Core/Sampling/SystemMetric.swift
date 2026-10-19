@@ -8,7 +8,7 @@
 import Foundation
 
 /// Метрика системы, которую показывает приложение.
-nonisolated enum SystemMetric: String, CaseIterable, Identifiable, Sendable {
+nonisolated enum SystemMetric: String, CaseIterable, Codable, Identifiable, Sendable {
     /// Загрузка CPU.
     case cpuLoad
     /// Температура CPU.

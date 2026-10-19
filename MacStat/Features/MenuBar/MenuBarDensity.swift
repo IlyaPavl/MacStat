@@ -26,7 +26,7 @@ enum MenuBarDensity: String, CaseIterable, Identifiable {
         }
     }
 
-    /// Отступ между колонками в двухстрочном стиле.
+    /// Отступ между элементами в двухстрочном стиле.
     var columnSpacing: CGFloat {
         switch self {
         case .compact: 3

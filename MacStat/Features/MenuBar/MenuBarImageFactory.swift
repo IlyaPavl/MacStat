@@ -9,6 +9,14 @@ import AppKit
 
 /// Рисует картинку для меню-бара через Core Text.
 enum MenuBarImageFactory {
+    /// Отмеренный элемент значка.
+    private struct Cell {
+        /// Ширина элемента.
+        let width: CGFloat
+        /// Рисует элемент от левого края `x`.
+        let draw: (_ x: CGFloat) -> Void
+    }
+
     /// SF Symbol для стиля «только иконка».
     static let fallbackSymbolName = "gauge.with.dots.needle.33percent"
 
@@ -19,7 +27,7 @@ enum MenuBarImageFactory {
     private static let captionAttributes = textAttributes(NSFont.systemFont(ofSize: 8, weight: .medium))
     /// Шрифт значения в двухстрочном стиле.
     private static let twoRowValueAttributes = textAttributes(NSFont.monospacedDigitSystemFont(ofSize: 11, weight: .semibold))
-    /// Шрифт значений в комбинированном столбце.
+    /// Шрифт значений в столбце из двух метрик.
     private static let stackedValueAttributes = textAttributes(NSFont.monospacedDigitSystemFont(ofSize: 10, weight: .semibold))
     /// Шрифт значения рядом с иконкой.
     private static let iconValueAttributes = textAttributes(NSFont.monospacedDigitSystemFont(ofSize: 12, weight: .medium))
@@ -32,7 +40,7 @@ enum MenuBarImageFactory {
     private static let twoRowColumnWidths = SystemMetric.allCases.reduce(into: [SystemMetric: CGFloat]()) {
         $0[$1] = max(captions[$1]?.size().width ?? 0, widestValueWidth(of: $1, attributes: twoRowValueAttributes))
     }
-    /// Минимальная ширина значения в комбинированном столбце.
+    /// Минимальная ширина значения в столбце из двух метрик.
     private static let stackedValueWidths = SystemMetric.allCases.reduce(into: [SystemMetric: CGFloat]()) {
         $0[$1] = widestValueWidth(of: $1, attributes: stackedValueAttributes)
     }
@@ -46,47 +54,54 @@ enum MenuBarImageFactory {
             .withSymbolConfiguration(NSImage.SymbolConfiguration(pointSize: 12, weight: .medium))
     }
 
-    /// Шаблонная картинка для стиля; `nil` — показать `fallbackSymbolName`.
-    static func makeImage(style: MenuBarStyle, density: MenuBarDensity, readings: [MenuBarReading]) -> NSImage? {
-        guard !readings.isEmpty else { return nil }
-        let image: NSImage? = switch style {
-        case .twoRows: makeTwoRowImage(readings, density: density)
-        case .stacked: makeStackedImage(readings)
-        case .iconsAndValues: makeIconsAndValuesImage(readings, density: density)
-        case .iconOnly: nil
+    /// Шаблонная картинка из элементов; `nil` — показать `fallbackSymbolName`.
+    static func makeImage(style: MenuBarStyle, density: MenuBarDensity, columns: [MenuBarColumn]) -> NSImage? {
+        guard !columns.isEmpty else { return nil }
+        let spacing: CGFloat
+        let makeSingleCell: (MenuBarReading) -> Cell
+        switch style {
+        case .twoRows:
+            spacing = density.columnSpacing
+            makeSingleCell = makeTwoRowCell
+        case .iconsAndValues:
+            spacing = density.itemSpacing
+            makeSingleCell = { makeIconAndValueCell($0, density: density) }
+        case .iconOnly:
+            return nil
         }
-        image?.isTemplate = true
+        let cells = columns.map { column in
+            switch column {
+            case .single(let reading): makeSingleCell(reading)
+            case .stacked(let top, let bottom): makeStackedCell(top: top, bottom: bottom)
+            }
+        }
+        let image = drawCells(cells, spacing: spacing)
+        image.isTemplate = true
         return image
     }
 
-    /// Колонки «подпись сверху, значение снизу».
-    private static func makeTwoRowImage(_ readings: [MenuBarReading], density: MenuBarDensity) -> NSImage {
-        let columns = readings.map { reading in
-            let value = NSAttributedString(string: reading.value, attributes: twoRowValueAttributes)
-            let valueSize = value.size()
-            let width = max(twoRowColumnWidths[reading.metric] ?? 0, ceil(valueSize.width))
-            return (caption: captions[reading.metric], value: value, valueSize: valueSize, width: width)
-        }
-        return drawColumns(widths: columns.map(\.width), spacing: density.columnSpacing) { index, x in
-            let column = columns[index]
-            if let caption = column.caption {
-                caption.draw(at: NSPoint(x: x + (column.width - caption.size().width) / 2, y: 0))
+    /// Подпись сверху, значение снизу.
+    private static func makeTwoRowCell(_ reading: MenuBarReading) -> Cell {
+        let caption = captions[reading.metric]
+        let value = NSAttributedString(string: reading.value, attributes: twoRowValueAttributes)
+        let valueSize = value.size()
+        let width = max(twoRowColumnWidths[reading.metric] ?? 0, ceil(valueSize.width))
+        return Cell(width: width) { x in
+            if let caption {
+                caption.draw(at: NSPoint(x: x + (width - caption.size().width) / 2, y: 0))
             }
-            column.value.draw(at: NSPoint(
-                x: x + (column.width - column.valueSize.width) / 2,
-                y: imageHeight - column.valueSize.height
-            ))
+            value.draw(at: NSPoint(x: x + (width - valueSize.width) / 2, y: imageHeight - valueSize.height))
         }
     }
 
-    /// Один столбец: первое значение сверху, второе снизу, без подписей.
-    private static func makeStackedImage(_ readings: [MenuBarReading]) -> NSImage {
-        let rows = readings.prefix(2).map { reading in
+    /// Два значения друг над другом без подписей.
+    private static func makeStackedCell(top: MenuBarReading, bottom: MenuBarReading) -> Cell {
+        let rows = [top, bottom].map { reading in
             let value = NSAttributedString(string: reading.value, attributes: stackedValueAttributes)
             return (value: value, size: value.size(), reservedWidth: stackedValueWidths[reading.metric] ?? 0)
         }
         let width = rows.map { max($0.reservedWidth, ceil($0.size.width)) }.max() ?? 0
-        return drawColumns(widths: [width], spacing: 0) { _, x in
+        return Cell(width: width) { x in
             for (index, row) in rows.enumerated() {
                 let y = index == 0 ? 0 : imageHeight - row.size.height
                 row.value.draw(at: NSPoint(x: x + (width - row.size.width) / 2, y: y))
@@ -95,37 +110,29 @@ enum MenuBarImageFactory {
     }
 
     /// Иконка и значение в одну строку.
-    private static func makeIconsAndValuesImage(_ readings: [MenuBarReading], density: MenuBarDensity) -> NSImage {
-        let items = readings.map { reading in
-            let symbol = symbolImages[reading.metric]
-            let value = NSAttributedString(string: reading.value, attributes: iconValueAttributes)
-            let valueSize = value.size()
-            let symbolWidth = symbol.map { ceil($0.size.width) + density.iconTextSpacing } ?? 0
-            let textWidth = max(iconValueWidths[reading.metric] ?? 0, ceil(valueSize.width))
-            return (symbol: symbol, value: value, valueSize: valueSize, symbolWidth: symbolWidth, width: symbolWidth + textWidth)
-        }
-        return drawColumns(widths: items.map(\.width), spacing: density.itemSpacing) { index, x in
-            let item = items[index]
-            if let symbol = item.symbol {
+    private static func makeIconAndValueCell(_ reading: MenuBarReading, density: MenuBarDensity) -> Cell {
+        let symbol = symbolImages[reading.metric]
+        let value = NSAttributedString(string: reading.value, attributes: iconValueAttributes)
+        let valueSize = value.size()
+        let symbolWidth = symbol.map { ceil($0.size.width) + density.iconTextSpacing } ?? 0
+        let textWidth = max(iconValueWidths[reading.metric] ?? 0, ceil(valueSize.width))
+        return Cell(width: symbolWidth + textWidth) { x in
+            if let symbol {
                 let size = symbol.size
                 symbol.draw(in: NSRect(x: x, y: (imageHeight - size.height) / 2, width: size.width, height: size.height))
             }
-            item.value.draw(at: NSPoint(x: x + item.symbolWidth, y: (imageHeight - item.valueSize.height) / 2))
+            value.draw(at: NSPoint(x: x + symbolWidth, y: (imageHeight - valueSize.height) / 2))
         }
     }
 
-    /// Картинка из колонок заданной ширины; `drawColumn` рисует колонку по индексу и X.
-    private static func drawColumns(
-        widths: [CGFloat],
-        spacing: CGFloat,
-        drawColumn: @escaping (_ index: Int, _ x: CGFloat) -> Void
-    ) -> NSImage {
-        let totalWidth = widths.reduce(0, +) + spacing * CGFloat(widths.count - 1)
+    /// Картинка из элементов, расставленных слева направо.
+    private static func drawCells(_ cells: [Cell], spacing: CGFloat) -> NSImage {
+        let totalWidth = cells.map(\.width).reduce(0, +) + spacing * CGFloat(cells.count - 1)
         return NSImage(size: NSSize(width: totalWidth, height: imageHeight), flipped: true) { _ in
             var x: CGFloat = 0
-            for (index, width) in widths.enumerated() {
-                drawColumn(index, x)
-                x += width + spacing
+            for cell in cells {
+                cell.draw(x)
+                x += cell.width + spacing
             }
             return true
         }

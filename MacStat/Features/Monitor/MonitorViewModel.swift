@@ -20,8 +20,8 @@ final class MonitorViewModel {
     private(set) var histories = Dictionary(
         uniqueKeysWithValues: SystemMetric.allCases.map { ($0, MetricHistory(capacity: historyCapacity)) }
     )
-    /// Текст для меню-бара; меняется только при изменении текста.
-    private(set) var menuBarReadings: [MenuBarReading] = []
+    /// Элементы меню-бара со значениями; меняются только при изменении текста.
+    private(set) var menuBarColumns: [MenuBarColumn] = []
 
     /// Название чипа.
     let chipName: String
@@ -61,9 +61,9 @@ final class MonitorViewModel {
                 }
             },
             Task { [weak self] in
-                for await _ in Observations({ settings.visibleMenuBarMetrics }) {
+                for await _ in Observations({ settings.visibleMenuBarItems }) {
                     guard let self else { return }
-                    refreshMenuBarReadings()
+                    refreshMenuBarColumns()
                 }
             },
         ]
@@ -114,7 +114,7 @@ final class MonitorViewModel {
     /// Перезапускает цикл замеров с текущим интервалом.
     private func restartSampling() {
         stopSampling()
-        refreshMenuBarReadings()
+        refreshMenuBarColumns()
         guard isSamplingNeeded else { return }
         let interval = settings.updateInterval.duration
         let sampler = sampler
@@ -146,16 +146,14 @@ final class MonitorViewModel {
                 histories[metric]?.append(value)
             }
         }
-        refreshMenuBarReadings()
+        refreshMenuBarColumns()
     }
 
-    /// Пересобирает текст меню-бара по видимым метрикам.
-    private func refreshMenuBarReadings() {
-        let readings = settings.visibleMenuBarMetrics.map {
-            MenuBarReading(metric: $0, value: $0.menuBarText(in: snapshot))
-        }
-        if readings != menuBarReadings {
-            menuBarReadings = readings
+    /// Пересобирает значения меню-бара по видимым элементам.
+    private func refreshMenuBarColumns() {
+        let columns = settings.visibleMenuBarItems.map { MenuBarColumn(item: $0, snapshot: snapshot) }
+        if columns != menuBarColumns {
+            menuBarColumns = columns
         }
     }
 }

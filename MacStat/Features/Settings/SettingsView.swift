@@ -32,22 +32,19 @@ struct SettingsView: View {
                 }
                 .pickerStyle(.segmented)
                 .disabled(!settings.menuBarStyle.showsValues)
+            }
 
-                switch settings.menuBarStyle {
-                case .stacked:
-                    MetricPicker(title: "Top row", selection: $settings.stackedTopMetric)
-                    MetricPicker(title: "Bottom row", selection: $settings.stackedBottomMetric)
-                case .twoRows, .iconsAndValues, .iconOnly:
-                    ForEach(SystemMetric.allCases) { metric in
-                        Toggle(isOn: $settings[isShown: metric]) {
-                            Label {
-                                Text(metric.title)
-                            } icon: {
-                                Image(systemName: metric.symbolName)
-                            }
-                        }
+            if settings.menuBarStyle.showsValues {
+                Section {
+                    ForEach($settings.menuBarItems) { $item in
+                        MenuBarItemRow(item: $item)
                     }
-                    .disabled(!settings.menuBarStyle.showsValues)
+                    Button("Add item", systemImage: "plus", action: settings.addMenuBarItem)
+                } header: {
+                    Text("Items")
+                } footer: {
+                    Text("Pick a second row to stack two values in one column.")
+                        .foregroundStyle(.secondary)
                 }
             }
 
@@ -71,6 +68,7 @@ struct SettingsView: View {
         .frame(width: 400)
         .fixedSize(horizontal: false, vertical: true)
         .animation(.default, value: settings.menuBarStyle)
+        .animation(.default, value: settings.menuBarItems.map(\.id))
         .onAppear(perform: launchAtLogin.reloadStatus)
     }
 }

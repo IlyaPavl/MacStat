@@ -14,40 +14,80 @@ struct AppSettingsTests {
     /// Отдельный `UserDefaults` на тест, чтобы не трогать настройки приложения.
     private let suiteName = "AppSettingsTests.\(UUID().uuidString)"
 
-    @Test func visibleMetricsFollowStyle() throws {
+    @Test func defaultsToEveryMetricAsSingleItem() throws {
         let defaults = try #require(UserDefaults(suiteName: suiteName))
         defer { defaults.removePersistentDomain(forName: suiteName) }
         let settings = AppSettings(defaults: defaults)
-        settings.menuBarMetrics = [.memory, .cpuLoad]
-        settings.stackedTopMetric = .cpuTemperature
-        settings.stackedBottomMetric = .fanSpeed
-
-        settings.menuBarStyle = .twoRows
-        #expect(settings.visibleMenuBarMetrics == [.cpuLoad, .memory])
-        settings.menuBarStyle = .stacked
-        #expect(settings.visibleMenuBarMetrics == [.cpuTemperature, .fanSpeed])
-        settings.menuBarStyle = .iconOnly
-        #expect(settings.visibleMenuBarMetrics.isEmpty)
+        #expect(settings.menuBarItems.map(\.metrics) == SystemMetric.allCases.map { [$0] })
     }
 
-    @Test func persistsNewOptions() throws {
+    @Test func iconOnlyHidesItems() throws {
         let defaults = try #require(UserDefaults(suiteName: suiteName))
         defer { defaults.removePersistentDomain(forName: suiteName) }
         let settings = AppSettings(defaults: defaults)
-        settings.menuBarStyle = .stacked
+        settings.menuBarStyle = .iconOnly
+        #expect(settings.visibleMenuBarItems.isEmpty)
+        settings.menuBarStyle = .iconsAndValues
+        #expect(settings.visibleMenuBarItems == settings.menuBarItems)
+    }
+
+    @Test func persistsMixedItems() throws {
+        let defaults = try #require(UserDefaults(suiteName: suiteName))
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+        let settings = AppSettings(defaults: defaults)
+        let items = [
+            MenuBarItem(primary: .cpuTemperature, secondary: .cpuLoad),
+            MenuBarItem(primary: .memory),
+            MenuBarItem(primary: .gpuTemperature, secondary: .fanSpeed),
+        ]
+        settings.menuBarItems = items
         settings.menuBarDensity = .compact
-        settings.stackedBottomMetric = .gpuTemperature
 
         let reloaded = AppSettings(defaults: defaults)
-        #expect(reloaded.menuBarStyle == .stacked)
+        #expect(reloaded.menuBarItems == items)
         #expect(reloaded.menuBarDensity == .compact)
-        #expect(reloaded.stackedBottomMetric == .gpuTemperature)
     }
 
-    @Test func keepsLegacyTwoRowsValue() throws {
+    @Test func addsUnusedMetricAndMovesItems() throws {
+        let defaults = try #require(UserDefaults(suiteName: suiteName))
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+        let settings = AppSettings(defaults: defaults)
+        settings.menuBarItems = [MenuBarItem(primary: .cpuLoad, secondary: .cpuTemperature)]
+
+        settings.addMenuBarItem()
+        #expect(settings.menuBarItems.map(\.primary) == [.cpuLoad, .fanSpeed])
+
+        let added = try #require(settings.menuBarItems.last)
+        #expect(!settings.canMoveMenuBarItem(added, by: 1))
+        settings.moveMenuBarItem(added, by: -1)
+        #expect(settings.menuBarItems.map(\.primary) == [.fanSpeed, .cpuLoad])
+
+        settings.removeMenuBarItem(added)
+        #expect(settings.menuBarItems.map(\.primary) == [.cpuLoad])
+    }
+
+    @Test func migratesLegacyStackedStyle() throws {
+        let defaults = try #require(UserDefaults(suiteName: suiteName))
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+        defaults.set("stacked", forKey: "menuBarStyle")
+        defaults.set("gpuTemperature", forKey: "stackedTopMetric")
+        defaults.set("fanSpeed", forKey: "stackedBottomMetric")
+
+        let settings = AppSettings(defaults: defaults)
+        #expect(settings.menuBarStyle == .twoRows)
+        #expect(settings.menuBarItems.map(\.metrics) == [[.gpuTemperature, .fanSpeed]])
+        #expect(defaults.object(forKey: "stackedTopMetric") == nil)
+    }
+
+    @Test func migratesLegacyMetricSelection() throws {
         let defaults = try #require(UserDefaults(suiteName: suiteName))
         defer { defaults.removePersistentDomain(forName: suiteName) }
         defaults.set("compact", forKey: "menuBarStyle")
-        #expect(AppSettings(defaults: defaults).menuBarStyle == .twoRows)
+        defaults.set(["memory", "cpuLoad"], forKey: "menuBarMetrics")
+
+        let settings = AppSettings(defaults: defaults)
+        #expect(settings.menuBarStyle == .twoRows)
+        #expect(settings.menuBarItems.map(\.metrics) == [[.cpuLoad], [.memory]])
+        #expect(AppSettings(defaults: defaults).menuBarItems == settings.menuBarItems)
     }
 }

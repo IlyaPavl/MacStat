@@ -31,12 +31,22 @@
         }
       }
     },
-    "Bottom row": {
+    "Actions": {
       "localizations": {
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Нижняя строка"
+            "value": "Действия"
+          }
+        }
+      }
+    },
+    "Add item": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Добавить элемент"
           }
         }
       }
@@ -164,6 +174,16 @@
         }
       }
     },
+    "Items": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Элементы"
+          }
+        }
+      }
+    },
     "Launch at login": {
       "localizations": {
         "ru": {
@@ -204,6 +224,46 @@
         }
       }
     },
+    "Metric": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Метрика"
+          }
+        }
+      }
+    },
+    "Move down": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Переместить ниже"
+          }
+        }
+      }
+    },
+    "Move up": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Переместить выше"
+          }
+        }
+      }
+    },
+    "Pick a second row to stack two values in one column.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Выберите вторую строку, чтобы показать два значения в одном столбце."
+          }
+        }
+      }
+    },
     "Quit MacStat": {
       "localizations": {
         "ru": {
@@ -214,8 +274,28 @@
         }
       }
     },
+    "Remove": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Удалить"
+          }
+        }
+      }
+    },
     "Sample": {
       "shouldTranslate": false
+    },
+    "Second row": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вторая строка"
+          }
+        }
+      }
     },
     "Settings…": {
       "localizations": {
@@ -227,12 +307,12 @@
         }
       }
     },
-    "Stacked column": {
+    "Single row": {
       "localizations": {
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Комбинированный столбец"
+            "value": "Одна строка"
           }
         }
       }
@@ -253,16 +333,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Стиль"
-          }
-        }
-      }
-    },
-    "Top row": {
-      "localizations": {
-        "ru": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Верхняя строка"
           }
         }
       }

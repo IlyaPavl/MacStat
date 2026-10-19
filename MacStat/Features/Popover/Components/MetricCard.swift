@@ -51,6 +51,6 @@ struct MetricCard: View {
         }
         .padding(12)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .glassEffect(.regular.tint(metric.tint.opacity(0.12)), in: .rect(cornerRadius: 16))
+        .glassEffect(.regular.interactive().tint(metric.tint.opacity(0.12)), in: .rect(cornerRadius: 16))
     }
 }

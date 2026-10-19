@@ -19,7 +19,7 @@ struct MenuBarLabel: View {
         if let image = MenuBarImageFactory.makeImage(
             style: settings.menuBarStyle,
             density: settings.menuBarDensity,
-            readings: monitor.menuBarReadings
+            columns: monitor.menuBarColumns
         ) {
             Image(nsImage: image)
         } else {

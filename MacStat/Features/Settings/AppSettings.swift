@@ -17,15 +17,20 @@ final class AppSettings {
         static let menuBarStyle = "menuBarStyle"
         /// Плотность меню-бара.
         static let menuBarDensity = "menuBarDensity"
-        /// Метрики в меню-баре.
-        static let menuBarMetrics = "menuBarMetrics"
-        /// Верхняя метрика комбинированного столбца.
-        static let stackedTopMetric = "stackedTopMetric"
-        /// Нижняя метрика комбинированного столбца.
-        static let stackedBottomMetric = "stackedBottomMetric"
+        /// Элементы меню-бара.
+        static let menuBarItems = "menuBarItems"
         /// Интервал обновления.
         static let updateInterval = "updateInterval"
+        /// Метрики прошлой версии; читается только при переносе.
+        static let legacyMenuBarMetrics = "menuBarMetrics"
+        /// Верх столбца прошлой версии; читается только при переносе.
+        static let legacyStackedTopMetric = "stackedTopMetric"
+        /// Низ столбца прошлой версии; читается только при переносе.
+        static let legacyStackedBottomMetric = "stackedBottomMetric"
     }
+
+    /// Стиль прошлой версии, в котором показывался один столбец.
+    private static let legacyStackedStyle = "stacked"
 
     /// Вид значка в меню-баре.
     var menuBarStyle: MenuBarStyle {
@@ -37,19 +42,9 @@ final class AppSettings {
         didSet { defaults.set(menuBarDensity.rawValue, forKey: Key.menuBarDensity) }
     }
 
-    /// Метрики, показанные в стилях с несколькими колонками.
-    var menuBarMetrics: Set<SystemMetric> {
-        didSet { defaults.set(menuBarMetrics.map(\.rawValue).sorted(), forKey: Key.menuBarMetrics) }
-    }
-
-    /// Верхняя строка комбинированного столбца.
-    var stackedTopMetric: SystemMetric {
-        didSet { defaults.set(stackedTopMetric.rawValue, forKey: Key.stackedTopMetric) }
-    }
-
-    /// Нижняя строка комбинированного столбца.
-    var stackedBottomMetric: SystemMetric {
-        didSet { defaults.set(stackedBottomMetric.rawValue, forKey: Key.stackedBottomMetric) }
+    /// Элементы значка по порядку: одиночные метрики и столбцы.
+    var menuBarItems: [MenuBarItem] {
+        didSet { saveMenuBarItems() }
     }
 
     /// Как часто снимать замеры.
@@ -60,41 +55,74 @@ final class AppSettings {
     /// Хранилище настроек.
     @ObservationIgnored private let defaults: UserDefaults
 
-    /// Загружает настройки; отсутствующие берутся по умолчанию.
+    /// Загружает настройки; отсутствующие берутся по умолчанию, старые переносятся.
     init(defaults: UserDefaults) {
         self.defaults = defaults
+        let savedItems = defaults.data(forKey: Key.menuBarItems)
+            .flatMap { try? JSONDecoder().decode([MenuBarItem].self, from: $0) }
+        menuBarItems = savedItems ?? Self.legacyMenuBarItems(in: defaults)
         menuBarStyle = defaults.string(forKey: Key.menuBarStyle).flatMap(MenuBarStyle.init(rawValue:)) ?? .twoRows
         menuBarDensity = defaults.string(forKey: Key.menuBarDensity).flatMap(MenuBarDensity.init(rawValue:)) ?? .standard
-        menuBarMetrics = defaults.stringArray(forKey: Key.menuBarMetrics)
-            .map { Set($0.compactMap(SystemMetric.init(rawValue:))) } ?? Set(SystemMetric.allCases)
-        stackedTopMetric = defaults.string(forKey: Key.stackedTopMetric).flatMap(SystemMetric.init(rawValue:)) ?? .cpuTemperature
-        stackedBottomMetric = defaults.string(forKey: Key.stackedBottomMetric).flatMap(SystemMetric.init(rawValue:)) ?? .cpuLoad
         updateInterval = UpdateInterval(rawValue: defaults.integer(forKey: Key.updateInterval)) ?? .twoSeconds
-    }
-
-    /// Метрики, которые сейчас выводятся в меню-бар, по порядку.
-    var visibleMenuBarMetrics: [SystemMetric] {
-        switch menuBarStyle {
-        case .twoRows, .iconsAndValues: SystemMetric.allCases.filter(isShown)
-        case .stacked: [stackedTopMetric, stackedBottomMetric]
-        case .iconOnly: []
+        if savedItems == nil {
+            saveMenuBarItems()
+            removeLegacyKeys()
         }
     }
 
-    /// Включена ли метрика для стилей с несколькими колонками.
-    func isShown(_ metric: SystemMetric) -> Bool {
-        menuBarMetrics.contains(metric)
+    /// Элементы, которые сейчас выводятся в меню-бар.
+    var visibleMenuBarItems: [MenuBarItem] {
+        menuBarStyle.showsValues ? menuBarItems : []
     }
 
-    /// Вкл/выкл метрики для `Toggle`: `$settings[isShown: metric]`.
-    subscript(isShown metric: SystemMetric) -> Bool {
-        get { isShown(metric) }
-        set {
-            if newValue {
-                menuBarMetrics.insert(metric)
-            } else {
-                menuBarMetrics.remove(metric)
-            }
+    /// Добавляет одиночную метрику — первую, которой ещё нет в значке.
+    func addMenuBarItem() {
+        let usedMetrics = Set(menuBarItems.flatMap(\.metrics))
+        let metric = SystemMetric.allCases.first { !usedMetrics.contains($0) } ?? .cpuLoad
+        menuBarItems.append(MenuBarItem(primary: metric))
+    }
+
+    /// Удаляет элемент.
+    func removeMenuBarItem(_ item: MenuBarItem) {
+        menuBarItems.removeAll { $0.id == item.id }
+    }
+
+    /// Сдвигает элемент на `offset` позиций, если есть куда.
+    func moveMenuBarItem(_ item: MenuBarItem, by offset: Int) {
+        guard let index = menuBarItems.firstIndex(where: { $0.id == item.id }),
+              menuBarItems.indices.contains(index + offset) else { return }
+        menuBarItems.swapAt(index, index + offset)
+    }
+
+    /// Можно ли сдвинуть элемент на `offset` позиций.
+    func canMoveMenuBarItem(_ item: MenuBarItem, by offset: Int) -> Bool {
+        menuBarItems.firstIndex { $0.id == item.id }
+            .map { menuBarItems.indices.contains($0 + offset) } ?? false
+    }
+
+    /// Сохраняет элементы меню-бара.
+    private func saveMenuBarItems() {
+        if let data = try? JSONEncoder().encode(menuBarItems) {
+            defaults.set(data, forKey: Key.menuBarItems)
         }
+    }
+
+    /// Убирает ключи прошлой версии после переноса.
+    private func removeLegacyKeys() {
+        for key in [Key.legacyMenuBarMetrics, Key.legacyStackedTopMetric, Key.legacyStackedBottomMetric] {
+            defaults.removeObject(forKey: key)
+        }
+    }
+
+    /// Элементы из настроек прошлой версии: столбец, если был выбран он, иначе включённые метрики.
+    private static func legacyMenuBarItems(in defaults: UserDefaults) -> [MenuBarItem] {
+        if defaults.string(forKey: Key.menuBarStyle) == legacyStackedStyle {
+            let top = defaults.string(forKey: Key.legacyStackedTopMetric).flatMap(SystemMetric.init(rawValue:))
+            let bottom = defaults.string(forKey: Key.legacyStackedBottomMetric).flatMap(SystemMetric.init(rawValue:))
+            return [MenuBarItem(primary: top ?? .cpuTemperature, secondary: bottom ?? .cpuLoad)]
+        }
+        let shownMetrics = defaults.stringArray(forKey: Key.legacyMenuBarMetrics)
+            .map { Set($0.compactMap(SystemMetric.init(rawValue:))) } ?? Set(SystemMetric.allCases)
+        return SystemMetric.allCases.filter(shownMetrics.contains).map { MenuBarItem(primary: $0) }
     }
 }
