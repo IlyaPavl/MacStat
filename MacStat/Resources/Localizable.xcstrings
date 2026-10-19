@@ -1,0 +1,285 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "%@ of %@": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ из %2$@"
+          }
+        }
+      }
+    },
+    "%@ rpm": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ об/мин"
+          }
+        }
+      }
+    },
+    "%lld s": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld с"
+          }
+        }
+      }
+    },
+    "Average across sensors": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Средняя по датчикам"
+          }
+        }
+      }
+    },
+    "CPU load": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Загрузка CPU"
+          }
+        }
+      }
+    },
+    "CPU temperature": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Температура CPU"
+          }
+        }
+      }
+    },
+    "CPU: %@": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CPU: %@"
+          }
+        }
+      }
+    },
+    "Copy summary": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Копировать сводку"
+          }
+        }
+      }
+    },
+    "Fan speed": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вентилятор"
+          }
+        }
+      }
+    },
+    "Floor": {
+      "shouldTranslate": false
+    },
+    "GPU temperature": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Температура GPU"
+          }
+        }
+      }
+    },
+    "GPU: %@C": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GPU: %@C"
+          }
+        }
+      }
+    },
+    "General": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Основные"
+          }
+        }
+      }
+    },
+    "Graphics": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Графика"
+          }
+        }
+      }
+    },
+    "Icon only": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Только иконка"
+          }
+        }
+      }
+    },
+    "Icons and values": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Иконки и значения"
+          }
+        }
+      }
+    },
+    "Launch at login": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Запускать при входе"
+          }
+        }
+      }
+    },
+    "Memory": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Память"
+          }
+        }
+      }
+    },
+    "Memory used": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Занятая память"
+          }
+        }
+      }
+    },
+    "Memory: %@ (%@ of %@)": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Память: %1$@ (%2$@ из %3$@)"
+          }
+        }
+      }
+    },
+    "Menu bar": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Строка меню"
+          }
+        }
+      }
+    },
+    "Processor": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Процессор"
+          }
+        }
+      }
+    },
+    "Quit MacStat": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Завершить MacStat"
+          }
+        }
+      }
+    },
+    "Sample": {
+      "shouldTranslate": false
+    },
+    "Settings…": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Настройки…"
+          }
+        }
+      }
+    },
+    "Style": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Стиль"
+          }
+        }
+      }
+    },
+    "Two rows": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Две строки"
+          }
+        }
+      }
+    },
+    "Update interval": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Интервал обновления"
+          }
+        }
+      }
+    },
+    "Value": {
+      "shouldTranslate": false
+    },
+    "fan %@ rpm": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "вентилятор %@ об/мин"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}
