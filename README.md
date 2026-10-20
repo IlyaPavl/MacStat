@@ -1,6 +1,6 @@
 # MacStat
 
-A lightweight menu bar monitor for Apple Silicon Macs: CPU load, CPU and GPU temperature, fan speed and memory use, right next to the clock.
+A lightweight menu bar monitor for Apple Silicon Macs: CPU load, CPU and GPU temperature, chip power, fan speed, battery temperature and memory use, right next to the clock.
 
 ![MacStat in the menu bar](docs/screenshots/menubar.png)
 
@@ -59,6 +59,8 @@ xcodebuild -project MacStat.xcodeproj -scheme MacStat -destination 'platform=mac
 - **CPU load** comes from Mach host statistics (`host_statistics` with `HOST_CPU_LOAD_INFO`).
 - **Memory** comes from `host_statistics64` with `HOST_VM_INFO64`.
 - **Temperatures and fan speed** are read from the System Management Controller (SMC) through IOKit. MacStat discovers the available sensors on first use and averages them per group, so the same build works across Apple Silicon generations.
+- **Chip power** is the SMC estimate of the power the whole chip dissipates (`PHPC`), in watts.
+- **Battery temperature** averages the SMC battery sensors (`TB0T`, `TB1T`…). It is hidden on Macs without a battery, just like fan speed on Macs without a fan.
 - **Sampling** runs in a dedicated actor off the main thread. The menu bar image is redrawn only when a displayed value changes.
 
 The app is not sandboxed, because SMC access is not available from the App Sandbox.
