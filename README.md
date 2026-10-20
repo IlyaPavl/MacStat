@@ -80,3 +80,7 @@ MacStat/
 ```
 
 The app uses MVVM with dependency injection, `@Observable` models and Swift 6 strict concurrency.
+
+## License
+
+MacStat is available under the MIT License. See [LICENSE](LICENSE) for details.
