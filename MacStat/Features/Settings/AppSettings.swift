@@ -31,6 +31,8 @@ final class AppSettings {
 
     /// Стиль прошлой версии, в котором показывался один столбец.
     private static let legacyStackedStyle = "stacked"
+    /// Метрики значка при первом запуске.
+    private static let defaultMenuBarMetrics: [SystemMetric] = [.cpuLoad, .cpuTemperature, .fanSpeed, .gpuTemperature, .memory]
 
     /// Вид значка в меню-баре.
     var menuBarStyle: MenuBarStyle {
@@ -126,7 +128,7 @@ final class AppSettings {
             return [MenuBarItem(primary: top ?? .cpuTemperature, secondary: bottom ?? .cpuLoad)]
         }
         let shownMetrics = defaults.stringArray(forKey: Key.legacyMenuBarMetrics)
-            .map { Set($0.compactMap(SystemMetric.init(rawValue:))) } ?? Set(SystemMetric.allCases)
+            .map { Set($0.compactMap(SystemMetric.init(rawValue:))) } ?? Set(defaultMenuBarMetrics)
         return SystemMetric.allCases.filter(shownMetrics.contains).map { MenuBarItem(primary: $0) }
     }
 }

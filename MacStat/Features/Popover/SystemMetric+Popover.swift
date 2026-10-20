@@ -9,15 +9,19 @@ import SwiftUI
 
 extension SystemMetric {
     /// Порядок карточек в поповере: пары по строкам, нечётная последняя растягивается.
-    static let popoverOrder: [SystemMetric] = [.cpuLoad, .cpuTemperature, .gpuTemperature, .fanSpeed, .memory]
+    static let popoverOrder: [SystemMetric] = [
+        .cpuLoad, .cpuTemperature, .chipPower, .gpuTemperature, .fanSpeed, .batteryTemperature, .memory,
+    ]
 
     /// Цвет графика и подсветки карточки.
     var tint: Color {
         switch self {
         case .cpuLoad: .blue
         case .cpuTemperature: .orange
+        case .chipPower: .yellow
         case .fanSpeed: .teal
         case .gpuTemperature: .pink
+        case .batteryTemperature: .green
         case .memory: .purple
         }
     }
@@ -26,7 +30,7 @@ extension SystemMetric {
     var chartRange: ClosedRange<Double>? {
         switch self {
         case .cpuLoad, .memory: 0...1
-        case .cpuTemperature, .fanSpeed, .gpuTemperature: nil
+        case .cpuTemperature, .chipPower, .fanSpeed, .gpuTemperature, .batteryTemperature: nil
         }
     }
 
@@ -36,8 +40,10 @@ extension SystemMetric {
         return switch self {
         case .cpuLoad, .memory:
             Text(verbatim: MetricFormatter.percent(value))
-        case .cpuTemperature, .gpuTemperature:
+        case .cpuTemperature, .gpuTemperature, .batteryTemperature:
             Text(verbatim: MetricFormatter.shortTemperature(value))
+        case .chipPower:
+            Text(verbatim: MetricFormatter.fullPower(value))
         case .fanSpeed:
             if let value {
                 Text("\(MetricFormatter.fullFanSpeed(value)) rpm")

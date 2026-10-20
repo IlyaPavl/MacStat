@@ -14,11 +14,12 @@ struct AppSettingsTests {
     /// Отдельный `UserDefaults` на тест, чтобы не трогать настройки приложения.
     private let suiteName = "AppSettingsTests.\(UUID().uuidString)"
 
-    @Test func defaultsToEveryMetricAsSingleItem() throws {
+    @Test func defaultsToBaseMetricsAsSingleItems() throws {
         let defaults = try #require(UserDefaults(suiteName: suiteName))
         defer { defaults.removePersistentDomain(forName: suiteName) }
         let settings = AppSettings(defaults: defaults)
-        #expect(settings.menuBarItems.map(\.metrics) == SystemMetric.allCases.map { [$0] })
+        let expected: [SystemMetric] = [.cpuLoad, .cpuTemperature, .fanSpeed, .gpuTemperature, .memory]
+        #expect(settings.menuBarItems.map(\.metrics) == expected.map { [$0] })
     }
 
     @Test func iconOnlyHidesItems() throws {
@@ -55,7 +56,7 @@ struct AppSettingsTests {
         settings.menuBarItems = [MenuBarItem(primary: .cpuLoad, secondary: .cpuTemperature)]
 
         let added = settings.addMenuBarItem()
-        #expect(settings.menuBarItems.map(\.primary) == [.cpuLoad, .fanSpeed])
+        #expect(settings.menuBarItems.map(\.primary) == [.cpuLoad, .chipPower])
         #expect(settings.menuBarItems.last == added)
 
         let first = try #require(settings.menuBarItems.first)

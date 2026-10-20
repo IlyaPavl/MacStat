@@ -97,6 +97,12 @@ final class MonitorViewModel {
         }
         lines.append(String(localized: "CPU: \(cpuParts.joined(separator: " · "))"))
         lines.append(String(localized: "GPU: \(MetricFormatter.fullTemperature(snapshot.gpuTemperature))"))
+        if let chipPower = snapshot.chipPower {
+            lines.append(String(localized: "Chip power: \(MetricFormatter.fullPower(chipPower))"))
+        }
+        if let batteryTemperature = snapshot.batteryTemperature {
+            lines.append(String(localized: "Battery: \(MetricFormatter.fullTemperature(batteryTemperature))"))
+        }
         if let memoryUsage = snapshot.memoryUsage {
             let percent = MetricFormatter.percent(memoryUsage.usedFraction)
             let used = MetricFormatter.memorySize(memoryUsage.usedBytes)

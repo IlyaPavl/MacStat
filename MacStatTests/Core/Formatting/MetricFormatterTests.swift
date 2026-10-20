@@ -18,6 +18,14 @@ struct MetricFormatterTests {
         #expect(MetricFormatter.shortFanSpeed(1900, locale: Locale(identifier: "ru_RU")) == "1,9k")
     }
 
+    @Test func shortPowerFormatting() {
+        let locale = Locale(identifier: "en_US")
+        #expect(MetricFormatter.shortPower(nil, locale: locale) == "—")
+        #expect(MetricFormatter.shortPower(4.54, locale: locale) == "4.5W")
+        #expect(MetricFormatter.shortPower(14.6, locale: locale) == "15W")
+        #expect(MetricFormatter.shortPower(1.66, locale: Locale(identifier: "ru_RU")) == "1,7W")
+    }
+
     @Test func percentAndTemperature() {
         #expect(MetricFormatter.percent(0.234) == "23%")
         #expect(MetricFormatter.shortTemperature(54.6) == "55°")

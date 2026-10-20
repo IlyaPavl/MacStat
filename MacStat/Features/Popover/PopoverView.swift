@@ -43,9 +43,9 @@ struct PopoverView: View {
         .onDisappear(perform: viewModel.popoverDidDisappear)
     }
 
-    /// Карточки по две в строке; вентилятор скрыт на Mac без него.
+    /// Карточки по две в строке; метрики, которых нет на этом Mac, скрыты.
     private var cardRows: [[SystemMetric]] {
-        let metrics = SystemMetric.popoverOrder.filter { $0 != .fanSpeed || viewModel.snapshot.fanSpeed != nil }
+        let metrics = SystemMetric.popoverOrder.filter { !$0.dependsOnHardware || $0.value(in: viewModel.snapshot) != nil }
         return stride(from: 0, to: metrics.count, by: 2).map { Array(metrics[$0..<min($0 + 2, metrics.count)]) }
     }
 }

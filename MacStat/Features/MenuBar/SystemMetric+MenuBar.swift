@@ -11,8 +11,10 @@ extension SystemMetric {
         switch self {
         case .cpuLoad: "CPU"
         case .cpuTemperature: "CPU°"
+        case .chipPower: "PWR"
         case .fanSpeed: "FAN"
         case .gpuTemperature: "GPU°"
+        case .batteryTemperature: "BAT°"
         case .memory: "RAM"
         }
     }
@@ -22,8 +24,10 @@ extension SystemMetric {
         switch self {
         case .cpuLoad: .cpuTemperature
         case .cpuTemperature, .memory: .cpuLoad
+        case .chipPower: .cpuTemperature
         case .fanSpeed: .gpuTemperature
         case .gpuTemperature: .fanSpeed
+        case .batteryTemperature: .chipPower
         }
     }
 
@@ -36,7 +40,8 @@ extension SystemMetric {
     var widestMenuBarText: String {
         switch self {
         case .cpuLoad, .memory: menuBarText(for: 1)
-        case .cpuTemperature, .gpuTemperature: menuBarText(for: 100)
+        case .cpuTemperature, .gpuTemperature, .batteryTemperature: menuBarText(for: 100)
+        case .chipPower: menuBarText(for: 188)
         case .fanSpeed: menuBarText(for: 8_800)
         }
     }
@@ -45,7 +50,8 @@ extension SystemMetric {
     private func menuBarText(for value: Double?) -> String {
         switch self {
         case .cpuLoad, .memory: MetricFormatter.percent(value)
-        case .cpuTemperature, .gpuTemperature: MetricFormatter.shortTemperature(value)
+        case .cpuTemperature, .gpuTemperature, .batteryTemperature: MetricFormatter.shortTemperature(value)
+        case .chipPower: MetricFormatter.shortPower(value)
         case .fanSpeed: MetricFormatter.shortFanSpeed(value)
         }
     }

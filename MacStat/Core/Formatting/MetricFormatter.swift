@@ -44,6 +44,20 @@ nonisolated enum MetricFormatter {
         Int(rpm.rounded()).formatted(.number)
     }
 
+    /// «4.2W», «15W» — для узкой колонки меню-бара.
+    static func shortPower(_ watts: Double?, locale: Locale = .current) -> String {
+        guard let watts else { return missingValue }
+        return watts.formatted(.number.precision(.fractionLength(watts < 10 ? 1 : 0)).locale(locale)) + "W"
+    }
+
+    /// «4.2 W» — для поповера и сводки.
+    static func fullPower(_ watts: Double?) -> String {
+        guard let watts else { return missingValue }
+        return Measurement(value: watts, unit: UnitPower.watts).formatted(
+            .measurement(width: .abbreviated, usage: .asProvided, numberFormatStyle: .number.precision(.fractionLength(1)))
+        )
+    }
+
     /// «12,4 ГБ».
     static func memorySize(_ bytes: UInt64) -> String {
         Int64(clamping: bytes).formatted(.byteCount(style: .memory))

@@ -137,6 +137,74 @@
         }
       }
     },
+    "Battery temperature": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "درجة حرارة البطارية"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Temperatura de la batería"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Température de la batterie"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Температура батареи"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "電池溫度"
+          }
+        }
+      }
+    },
+    "Battery: %@": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "البطارية: %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Batería: %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Batterie : %@"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Батарея: %@"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "電池：%@"
+          }
+        }
+      }
+    },
     "Bottom": {
       "localizations": {
         "ar": {
@@ -269,6 +337,74 @@
           "stringUnit": {
             "state": "machine_translated",
             "value": "CPU：%@"
+          }
+        }
+      }
+    },
+    "Chip power": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "طاقة الشريحة"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Potencia del chip"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Puissance de la puce"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Мощность чипа"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "晶片功耗"
+          }
+        }
+      }
+    },
+    "Chip power: %@": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "طاقة الشريحة: %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Potencia del chip: %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Puissance de la puce : %@"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Мощность чипа: %@"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "晶片功耗：%@"
           }
         }
       }
