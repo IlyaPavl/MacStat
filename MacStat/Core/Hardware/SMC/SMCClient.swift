@@ -62,10 +62,18 @@ nonisolated final class SMCClient {
     private static let cpuKeyPrefixes: Set<UInt32> = [SMCKey("Tp").code, SMCKey("Te").code]
     /// Префикс датчиков GPU.
     private static let gpuKeyPrefix = SMCKey("Tg").code
+    /// Префикс датчиков батареи `TB0T`, `TB1T`…
+    private static let batteryKeyPrefix = SMCKey("TB").code
+    /// Последний символ ключей температуры батареи.
+    private static let batteryKeySuffix = UInt32(Character("T").asciiValue ?? 0)
+    /// Оценка тепловой мощности SoC, Вт.
+    private static let chipPowerKey = SMCKey("PHPC")
     /// Селектор метода драйвера `handleYPCEvent`.
     private static let structMethodSelector: UInt32 = 2
     /// Реалистичные температуры, °C; остальное — мусор.
     private static let plausibleTemperatureRange = 1.0...130.0
+    /// Реалистичная мощность чипа, Вт.
+    private static let plausiblePowerRange = 0.0...500.0
     /// Лимит датчиков CPU: каждое чтение ~0,1 мс, а среднее от прореживания не меняется.
     private static let maxCPUSensorCount = 12
     /// Лимит датчиков GPU.
@@ -92,27 +100,37 @@ nonisolated final class SMCClient {
         IOServiceClose(connection)
     }
 
-    /// Один раз обходит все ключи и отбирает датчики CPU (`Tp*`, `Te*`), GPU (`Tg*`) и вентиляторов.
+    /// Один раз обходит все ключи и отбирает датчики CPU (`Tp*`, `Te*`), GPU (`Tg*`), батареи (`TB*T`),
+    /// вентиляторов и мощности чипа.
     func discoverSensors() -> SMCSensorCatalog {
         var cpuSensors: [SMCSensor] = []
         var gpuSensors: [SMCSensor] = []
+        var batterySensors: [SMCSensor] = []
         for index in 0..<readKeyCount() {
             guard let key = readKey(atIndex: index) else { continue }
             let prefix = key.code >> 16
             let isCPU = Self.cpuKeyPrefixes.contains(prefix)
             let isGPU = prefix == Self.gpuKeyPrefix
-            guard isCPU || isGPU,
-                  let sensor = readSensorInfo(for: key),
-                  sensor.dataType == DataType.float,
+            let isBattery = prefix == Self.batteryKeyPrefix && key.code & 0xFF == Self.batteryKeySuffix
+            guard isCPU || isGPU || isBattery,
+                  let sensor = readFloatSensor(for: key),
                   let value = readValue(of: sensor),
                   Self.plausibleTemperatureRange.contains(value)
             else { continue }
-            if isCPU { cpuSensors.append(sensor) } else { gpuSensors.append(sensor) }
+            if isCPU {
+                cpuSensors.append(sensor)
+            } else if isGPU {
+                gpuSensors.append(sensor)
+            } else {
+                batterySensors.append(sensor)
+            }
         }
         return SMCSensorCatalog(
             cpuTemperatureSensors: cpuSensors.evenlySpaced(upTo: Self.maxCPUSensorCount),
             gpuTemperatureSensors: gpuSensors.evenlySpaced(upTo: Self.maxGPUSensorCount),
-            fanSensors: discoverFanSensors()
+            fanSensors: discoverFanSensors(),
+            batteryTemperatureSensors: batterySensors,
+            chipPowerSensors: readFloatSensor(for: Self.chipPowerKey).map { [$0] } ?? []
         )
     }
 
@@ -124,6 +142,11 @@ nonisolated final class SMCClient {
     /// Средние обороты вентиляторов.
     func averageFanSpeed(of sensors: [SMCSensor]) -> Double? {
         averageValue(of: sensors) { _ in true }
+    }
+
+    /// Средняя мощность по датчикам, Вт.
+    func averagePower(of sensors: [SMCSensor]) -> Double? {
+        averageValue(of: sensors) { Self.plausiblePowerRange.contains($0) }
     }
 
     /// Среднее по датчикам, прошедшим `isValid`.
@@ -169,6 +192,12 @@ nonisolated final class SMCClient {
         writeInput(UInt32(index), at: Layout.indexOffset)
         guard send(.readKeyAtIndex) else { return nil }
         return SMCKey(code: readOutput(at: Layout.keyOffset))
+    }
+
+    /// Датчик ключа, если его значение — float.
+    private func readFloatSensor(for key: SMCKey) -> SMCSensor? {
+        guard let sensor = readSensorInfo(for: key), sensor.dataType == DataType.float else { return nil }
+        return sensor
     }
 
     /// Размер и тип значения ключа.

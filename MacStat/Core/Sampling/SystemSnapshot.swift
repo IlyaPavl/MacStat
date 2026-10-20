@@ -15,6 +15,10 @@ nonisolated struct SystemSnapshot: Equatable, Sendable {
     var gpuTemperature: Double?
     /// Средние обороты вентиляторов; `nil` без вентилятора.
     var fanSpeed: Double?
+    /// Средняя температура батареи, °C; `nil` без батареи.
+    var batteryTemperature: Double?
+    /// Оценка мощности, которую рассеивает чип, Вт.
+    var chipPower: Double?
     /// Использование памяти.
     var memoryUsage: MemoryUsage?
 

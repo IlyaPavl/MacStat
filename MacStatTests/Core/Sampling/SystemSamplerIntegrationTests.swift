@@ -22,6 +22,12 @@ struct SystemSamplerIntegrationTests {
         #expect((15...120).contains(cpuTemperature))
         let gpuTemperature = try #require(snapshot.gpuTemperature)
         #expect((15...120).contains(gpuTemperature))
+        if let chipPower = snapshot.chipPower {
+            #expect((0...500).contains(chipPower))
+        }
+        if let batteryTemperature = snapshot.batteryTemperature {
+            #expect((1...130).contains(batteryTemperature))
+        }
         let memory = try #require(snapshot.memoryUsage)
         #expect(memory.usedBytes > 0 && memory.usedBytes <= memory.totalBytes)
     }

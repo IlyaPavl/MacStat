@@ -13,7 +13,17 @@ nonisolated struct SMCSensorCatalog: Sendable {
     let gpuTemperatureSensors: [SMCSensor]
     /// Обороты вентиляторов.
     let fanSensors: [SMCSensor]
+    /// Температуры батареи.
+    let batteryTemperatureSensors: [SMCSensor]
+    /// Оценка мощности чипа.
+    let chipPowerSensors: [SMCSensor]
 
     /// Пустой каталог, если SMC недоступен.
-    static let empty = SMCSensorCatalog(cpuTemperatureSensors: [], gpuTemperatureSensors: [], fanSensors: [])
+    static let empty = SMCSensorCatalog(
+        cpuTemperatureSensors: [],
+        gpuTemperatureSensors: [],
+        fanSensors: [],
+        batteryTemperatureSensors: [],
+        chipPowerSensors: []
+    )
 }

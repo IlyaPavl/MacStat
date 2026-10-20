@@ -24,6 +24,8 @@ actor SystemSampler: SystemSampling {
             cpuTemperature: smc?.averageTemperature(of: sensors.cpuTemperatureSensors),
             gpuTemperature: smc?.averageTemperature(of: sensors.gpuTemperatureSensors),
             fanSpeed: smc?.averageFanSpeed(of: sensors.fanSensors),
+            batteryTemperature: smc?.averageTemperature(of: sensors.batteryTemperatureSensors),
+            chipPower: smc?.averagePower(of: sensors.chipPowerSensors),
             memoryUsage: memoryReader.readUsage()
         )
     }
