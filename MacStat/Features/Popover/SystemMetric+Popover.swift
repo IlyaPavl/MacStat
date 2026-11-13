@@ -26,11 +26,23 @@ extension SystemMetric {
         }
     }
 
-    /// Фиксированный диапазон графика; `nil` — по данным.
-    var chartRange: ClosedRange<Double>? {
+    /// Базовый диапазон графика; верхняя граница растёт, если значения выходят за неё.
+    var chartRange: ClosedRange<Double> {
         switch self {
         case .cpuLoad, .memory: 0...1
-        case .cpuTemperature, .chipPower, .fanSpeed, .gpuTemperature, .batteryTemperature: nil
+        case .cpuTemperature, .gpuTemperature, .batteryTemperature: 0...100
+        case .chipPower: 0...200
+        case .fanSpeed: 0...2000
+        }
+    }
+
+    /// Подпись деления оси графика.
+    func axisLabel(for value: Double) -> String {
+        switch self {
+        case .cpuLoad, .memory: MetricFormatter.percent(value)
+        case .cpuTemperature, .gpuTemperature, .batteryTemperature: MetricFormatter.shortTemperature(value)
+        case .chipPower: MetricFormatter.shortPower(value)
+        case .fanSpeed: MetricFormatter.fullFanSpeed(value)
         }
     }
 

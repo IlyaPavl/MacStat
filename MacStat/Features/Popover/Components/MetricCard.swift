@@ -47,7 +47,7 @@ struct MetricCard: View {
                 }
             }
 
-            SparklineView(history: history, tint: metric.tint, fixedYRange: metric.chartRange)
+            SparklineView(history: history, tint: metric.tint, baseRange: metric.chartRange, axisLabel: metric.axisLabel(for:))
         }
         .padding(12)
         .frame(maxWidth: .infinity, alignment: .leading)

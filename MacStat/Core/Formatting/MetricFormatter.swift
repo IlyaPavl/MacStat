@@ -32,16 +32,10 @@ nonisolated enum MetricFormatter {
         )
     }
 
-    /// «850», «1.9k» — для узкой колонки меню-бара.
-    static func shortFanSpeed(_ rpm: Double?, locale: Locale = .current) -> String {
+    /// «1850» — полное число оборотов.
+    static func fullFanSpeed(_ rpm: Double?, locale: Locale = .current) -> String {
         guard let rpm else { return missingValue }
-        guard rpm >= 1000 else { return "\(Int(rpm.rounded()))" }
-        return (rpm / 1000).formatted(.number.precision(.fractionLength(1)).locale(locale)) + "k"
-    }
-
-    /// «1 850» — полное число оборотов.
-    static func fullFanSpeed(_ rpm: Double) -> String {
-        Int(rpm.rounded()).formatted(.number)
+        return Int(rpm.rounded()).formatted(.number.grouping(.never).locale(locale))
     }
 
     /// «4.2W», «15W» — для узкой колонки меню-бара.

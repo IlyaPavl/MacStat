@@ -10,12 +10,12 @@ import Testing
 @testable import MacStat
 
 struct MetricFormatterTests {
-    @Test func shortFanSpeedFormatting() {
+    @Test func fullFanSpeedFormatting() {
         let locale = Locale(identifier: "en_US")
-        #expect(MetricFormatter.shortFanSpeed(nil, locale: locale) == "—")
-        #expect(MetricFormatter.shortFanSpeed(0, locale: locale) == "0")
-        #expect(MetricFormatter.shortFanSpeed(1849, locale: locale) == "1.8k")
-        #expect(MetricFormatter.shortFanSpeed(1900, locale: Locale(identifier: "ru_RU")) == "1,9k")
+        #expect(MetricFormatter.fullFanSpeed(nil, locale: locale) == "—")
+        #expect(MetricFormatter.fullFanSpeed(0, locale: locale) == "0")
+        #expect(MetricFormatter.fullFanSpeed(1849.6, locale: locale) == "1850")
+        #expect(MetricFormatter.fullFanSpeed(1500, locale: Locale(identifier: "ru_RU")) == "1500")
     }
 
     @Test func shortPowerFormatting() {

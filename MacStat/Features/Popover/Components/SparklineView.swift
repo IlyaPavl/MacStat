@@ -8,14 +8,16 @@
 import Charts
 import SwiftUI
 
-/// Мини-график истории метрики.
+/// Мини-график истории метрики с осью значений.
 struct SparklineView: View {
     /// Данные графика.
     let history: MetricHistory
     /// Цвет линии и заливки.
     let tint: Color
-    /// Фиксированный диапазон по Y (например, 0...1); `nil` — по данным с запасом.
-    var fixedYRange: ClosedRange<Double>?
+    /// Базовый диапазон по Y; верхняя граница растёт шагами в половину диапазона, если значения выходят за неё.
+    let baseRange: ClosedRange<Double>
+    /// Подпись деления оси.
+    let axisLabel: (Double) -> String
 
     var body: some View {
         let values = history.values
@@ -37,16 +39,28 @@ struct SparklineView: View {
         .chartXScale(domain: 0...(history.capacity - 1))
         .chartYScale(domain: yRange)
         .chartXAxis(.hidden)
-        .chartYAxis(.hidden)
+        .chartYAxis {
+            let ticks = [yRange.lowerBound, (yRange.lowerBound + yRange.upperBound) / 2, yRange.upperBound]
+            AxisMarks(position: .trailing, values: ticks) { mark in
+                AxisGridLine(stroke: StrokeStyle(lineWidth: 0.5, dash: [2, 2]))
+                AxisValueLabel {
+                    if let value = mark.as(Double.self) {
+                        Text(verbatim: axisLabel(value))
+                            .font(.system(size: 8))
+                            .monospacedDigit()
+                    }
+                }
+            }
+        }
         .chartLegend(.hidden)
-        .frame(height: 32)
+        .frame(height: 56)
         .accessibilityHidden(true)
     }
 
     /// Итоговый диапазон по Y.
     private var yRange: ClosedRange<Double> {
-        if let fixedYRange { return fixedYRange }
-        guard let low = history.values.min(), let high = history.values.max() else { return 0...1 }
-        return (low - 3)...(high + 3)
+        let step = (baseRange.upperBound - baseRange.lowerBound) / 2
+        guard let high = history.values.max(), high > baseRange.upperBound, step > 0 else { return baseRange }
+        return baseRange.lowerBound...((high / step).rounded(.up) * step)
     }
 }
