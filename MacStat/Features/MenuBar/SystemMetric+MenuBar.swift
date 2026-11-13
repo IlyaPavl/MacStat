@@ -52,7 +52,7 @@ extension SystemMetric {
         case .cpuLoad, .memory: MetricFormatter.percent(value)
         case .cpuTemperature, .gpuTemperature, .batteryTemperature: MetricFormatter.shortTemperature(value)
         case .chipPower: MetricFormatter.shortPower(value)
-        case .fanSpeed: MetricFormatter.shortFanSpeed(value)
+        case .fanSpeed: MetricFormatter.fullFanSpeed(value)
         }
     }
 }
