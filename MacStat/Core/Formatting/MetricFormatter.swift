@@ -52,6 +52,17 @@ nonisolated enum MetricFormatter {
         )
     }
 
+    /// Мощность батареи со знаком; единицы и десятичный разделитель локализуются.
+    static func signedPower(_ watts: Double) -> String {
+        Measurement(value: watts, unit: UnitPower.watts).formatted(
+            .measurement(
+                width: .abbreviated,
+                usage: .asProvided,
+                numberFormatStyle: .number.precision(.fractionLength(1)).sign(strategy: .always(includingZero: false))
+            )
+        )
+    }
+
     /// «12,4 ГБ».
     static func memorySize(_ bytes: UInt64) -> String {
         Int64(clamping: bytes).formatted(.byteCount(style: .memory))

@@ -38,6 +38,20 @@ nonisolated final class MemoryReader {
         var swap = xsw_usage()
         var swapSize = MemoryLayout.size(ofValue: swap)
         let hasSwap = sysctlbyname("vm.swapusage", &swap, &swapSize, nil, 0) == 0
-        return MemoryUsage(usedBytes: min(usedPages * pageSize, physicalMemory), totalBytes: physicalMemory, pressure: MemoryPressure.read(), swapBytes: hasSwap ? swap.xsu_used : nil, compressedBytes: UInt64(stats.compressor_page_count) * pageSize)
+        return MemoryUsage(
+            usedBytes: min(usedPages * pageSize, physicalMemory),
+            totalBytes: physicalMemory,
+            pressure: readPressure(),
+            swapBytes: hasSwap ? swap.xsu_used : nil,
+            compressedBytes: UInt64(stats.compressor_page_count) * pageSize
+        )
+    }
+
+    /// Значение sysctl: normal=1, warning=2, critical=4; неизвестное скрываем.
+    private func readPressure() -> MemoryPressure? {
+        var level: Int32 = 0
+        var size = MemoryLayout.size(ofValue: level)
+        guard sysctlbyname("kern.memorystatus_vm_pressure_level", &level, &size, nil, 0) == 0 else { return nil }
+        return MemoryPressure(rawValue: Int(level))
     }
 }

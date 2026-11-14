@@ -10,6 +10,7 @@ import SwiftUI
 /// Точка входа: значок в меню-баре и окно настроек.
 @main
 struct MacStatApp: App {
+    /// Делегат сохраняет историю до завершения приложения.
     @NSApplicationDelegateAdaptor(HistoryLifecycle.self) private var lifecycle
 
     /// Настройки приложения.
@@ -25,7 +26,6 @@ struct MacStatApp: App {
     init() {
         let settings = AppSettings(defaults: .standard)
         let sampler = SystemSampler()
-        HistoryLifecycle.sampler = sampler
         let monitor = MonitorViewModel(
             sampler: sampler,
             settings: settings,
@@ -44,6 +44,7 @@ struct MacStatApp: App {
             localizations: Bundle.main.localizations,
             relauncher: WorkspaceAppRelauncher()
         ))
+        lifecycle.sampler = sampler
     }
 
     var body: some Scene {

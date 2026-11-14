@@ -15,11 +15,11 @@ struct MetricCard: View {
     let value: Text
     /// Уточнение справа от значения.
     let detail: Text?
-    /// Данные графика.
-    let history: MetricHistory
-
-    var points: [HistoryPoint] = []
-    var hours: Int = 1
+    /// Точки выбранного периода, подготовленные актором сэмплинга.
+    let points: [HistoryPoint]
+    /// Период графика в часах.
+    let hours: Int
+    /// Дополнительные сведения только для карточки памяти.
     var memoryUsage: MemoryUsage? = nil
 
     var body: some View {
@@ -34,7 +34,9 @@ struct MetricCard: View {
             .foregroundStyle(.secondary)
             .lineLimit(1)
 
-            if let memoryUsage { MemoryDetailsView(usage: memoryUsage) }
+            if let memoryUsage {
+                MemoryDetailsView(usage: memoryUsage)
+            }
 
             HStack(alignment: .firstTextBaseline, spacing: 6) {
                 value
@@ -53,7 +55,14 @@ struct MetricCard: View {
                 }
             }
 
-            TimelineSparkline(points: points, hours: hours, tint: metric.tint, baseRange: metric.chartRange, showPeaks: metric == .cpuTemperature || metric == .gpuTemperature || metric == .batteryTemperature)
+            SparklineView(
+                points: points,
+                hours: hours,
+                tint: metric.tint,
+                baseRange: metric.chartRange,
+                showPeaks: metric.showsHistoryPeaks,
+                axisLabel: metric.axisLabel(for:)
+            )
         }
         .padding(12)
         .frame(maxWidth: .infinity, alignment: .leading)

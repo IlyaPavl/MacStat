@@ -8,7 +8,11 @@ A lightweight menu bar monitor for Apple Silicon Macs: CPU load, CPU and GPU tem
 
 - **Live menu bar readings.** Pick the metrics you want and the order they appear in. Show each one on its own, or stack two in a single column to save space.
 - **Three menu bar styles:** two rows, icons and values, or icon only. Compact and standard density.
-- **Popover with history.** Click the menu bar item to see every metric in a glass card with a short chart of recent values.
+- **Persistent history.** Choose 1, 6, 24 or 48 hours. Minute averages and temperature peaks survive restarts; gaps after sleep remain gaps. History stays on your Mac.
+- **Thermal state.** A badge shows the state reported by macOS, with a menu bar warning only for serious or critical conditions.
+- **Memory pressure.** See the system pressure level, swap and compressed memory alongside memory use.
+- **Battery details.** On supported Macs, see health, cycle count, signed battery power and the connected adapter rating.
+- **Top processes.** The three leading CPU and memory consumers appear while the popover is open. App helpers are grouped; CPU is measured as a percentage of one core.
 - **Copy summary.** Copy all current readings as plain text in one click.
 - **Launch at login**, with an update interval of 1, 2 or 5 seconds.
 - **Localized** in English, Russian, French, Spanish, Arabic and Traditional Chinese. You can switch the app language in Settings without changing the system language.
@@ -61,7 +65,12 @@ xcodebuild -project MacStat.xcodeproj -scheme MacStat -destination 'platform=mac
 - **Temperatures and fan speed** are read from the System Management Controller (SMC) through IOKit. MacStat discovers the available sensors on first use and averages them per group, so the same build works across Apple Silicon generations.
 - **Chip power** is the SMC estimate of the power the whole chip dissipates (`PHPC`), in watts.
 - **Battery temperature** averages the SMC battery sensors (`TB0T`, `TB1T`…). It is hidden on Macs without a battery, just like fan speed on Macs without a fan.
-- **Sampling** runs in a dedicated actor off the main thread. The menu bar image is redrawn only when a displayed value changes.
+- **Thermal state** uses `ProcessInfo.thermalStateDidChangeNotification`, not a polling timer. It describes thermal pressure and does not by itself establish throttling.
+- **Memory pressure and swap** come from `kern.memorystatus_vm_pressure_level` and `vm.swapusage`; unavailable fields are hidden.
+- **Battery details** come from the `AppleSmartBattery` IOKit service, refreshed at most every five seconds. Health uses raw maximum capacity divided by design capacity.
+- **Processes** use libproc physical footprint and CPU deltas converted from mach absolute ticks through `mach_timebase_info`. They are sampled every two seconds only while the panel is open.
+- **History** stores version 1 JSON at `~/Library/Application Support/MacStat/history.json`: minute averages/maxima for 48 hours and raw samples in memory for one hour. Writes are atomic every five minutes, on a sleep notification and before normal quit. Sampling continues in icon-only mode for overnight history; sleeping or powered-off Macs produce gaps.
+- **Sampling and history IO** run in a dedicated actor off the main thread. The menu bar image is redrawn only when a displayed value changes.
 
 The app is not sandboxed, because SMC access is not available from the App Sandbox.
 
@@ -70,7 +79,7 @@ The app is not sandboxed, because SMC access is not available from the App Sandb
 ```
 MacStat/
 ├── App/            App entry point and dependency wiring
-├── Core/           Hardware readers (CPU, memory, SMC), sampling, formatting
+├── Core/           Hardware readers, sampling, formatting and persistent history
 ├── Features/
 │   ├── MenuBar/    Menu bar item model and image rendering
 │   ├── Monitor/    Sampling loop and metric history

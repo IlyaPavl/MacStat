@@ -16,20 +16,16 @@ struct MenuBarLabel: View {
     let settings: AppSettings
 
     var body: some View {
-        HStack(spacing: 3) {
-        if monitor.thermalStatus.rawValue >= ThermalStatus.high.rawValue {
-            Image(systemName: "thermometer.sun.fill")
-                .accessibilityLabel(Text("High thermal state"))
-        }
         if let image = MenuBarImageFactory.makeImage(
             style: settings.menuBarStyle,
             density: settings.menuBarDensity,
-            columns: monitor.menuBarColumns
+            columns: monitor.menuBarColumns,
+            thermalStatus: monitor.thermalStatus
         ) {
             Image(nsImage: image)
+                .help(Text(monitor.thermalStatus.title))
         } else {
             Image(systemName: MenuBarImageFactory.fallbackSymbolName)
-        }
         }
     }
 }

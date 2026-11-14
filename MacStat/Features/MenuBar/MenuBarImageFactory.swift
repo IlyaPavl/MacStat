@@ -54,8 +54,33 @@ enum MenuBarImageFactory {
             .withSymbolConfiguration(NSImage.SymbolConfiguration(pointSize: 12, weight: .medium))
     }
 
-    /// Шаблонная картинка из элементов; `nil` — показать `fallbackSymbolName`.
-    static func makeImage(style: MenuBarStyle, density: MenuBarDensity, columns: [MenuBarColumn]) -> NSImage? {
+    /// Предупреждение рисуется в той же картинке, чтобы MenuBarExtra получил одну Image.
+    static func makeImage(
+        style: MenuBarStyle,
+        density: MenuBarDensity,
+        columns: [MenuBarColumn],
+        thermalStatus: ThermalStatus = .normal
+    ) -> NSImage? {
+        let metrics = makeMetricsImage(style: style, density: density, columns: columns)
+        guard thermalStatus.needsWarning else { return metrics }
+        guard let warning = NSImage(systemSymbolName: "thermometer.sun.fill", accessibilityDescription: nil)?
+            .withSymbolConfiguration(NSImage.SymbolConfiguration(pointSize: 12, weight: .medium)),
+              let content = metrics ?? NSImage(systemSymbolName: fallbackSymbolName, accessibilityDescription: nil) else {
+            return metrics
+        }
+        let spacing: CGFloat = 3
+        let width = ceil(warning.size.width) + spacing + content.size.width
+        let image = NSImage(size: NSSize(width: width, height: imageHeight), flipped: true) { _ in
+            warning.draw(in: NSRect(x: 0, y: (imageHeight - warning.size.height) / 2, width: warning.size.width, height: warning.size.height))
+            content.draw(in: NSRect(x: ceil(warning.size.width) + spacing, y: (imageHeight - content.size.height) / 2, width: content.size.width, height: content.size.height))
+            return true
+        }
+        image.isTemplate = true
+        return image
+    }
+
+    /// Шаблонная картинка метрик; `nil` — показать `fallbackSymbolName`.
+    private static func makeMetricsImage(style: MenuBarStyle, density: MenuBarDensity, columns: [MenuBarColumn]) -> NSImage? {
         guard !columns.isEmpty else { return nil }
         let spacing: CGFloat
         let makeSingleCell: (MenuBarReading) -> Cell

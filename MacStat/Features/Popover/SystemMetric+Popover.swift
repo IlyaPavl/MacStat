@@ -26,6 +26,14 @@ extension SystemMetric {
         }
     }
 
+    /// Температуры показывают и среднее, и максимум минутного бакета.
+    var showsHistoryPeaks: Bool {
+        switch self {
+        case .cpuTemperature, .gpuTemperature, .batteryTemperature: true
+        case .cpuLoad, .chipPower, .fanSpeed, .memory: false
+        }
+    }
+
     /// Базовый диапазон графика; верхняя граница растёт, если значения выходят за неё.
     var chartRange: ClosedRange<Double> {
         switch self {

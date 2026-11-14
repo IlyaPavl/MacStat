@@ -22,6 +22,7 @@ nonisolated struct SystemSnapshot: Equatable, Sendable {
     /// Использование памяти.
     var memoryUsage: MemoryUsage?
 
+    /// Сведения батареи; nil на Mac без AppleSmartBattery.
     var battery: BatteryReading? = nil
 
     /// Замер без данных.

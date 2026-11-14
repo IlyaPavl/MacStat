@@ -5,22 +5,19 @@
 //  Created by Ilya Pavlov on 19.10.2026.
 //
 
-/// Снимает метрики с железа вне главного потока; SMC открывается при первом замере.
 import Foundation
+import OSLog
 
+/// Снимает метрики с железа вне главного потока; SMC открывается при первом замере.
 actor SystemSampler: SystemSampling {
-    private let historyStore = HistoryStore()
-    private let processes = ProcessReader()
+    /// Читатели и хранилище доступны только этому актору.
+    private let historyStore: HistoryStore
+    private let processReader = ProcessReader()
+    private let batteryReader = BatteryReader()
+    private let logger = Logger(subsystem: "ipavlov.MacStat", category: "History")
+    /// Батарея обновляется не чаще одного раза в пять секунд.
     private var battery: BatteryReading?
-    private var batteryReadAt = Date.distantPast
-
-    func processRows(reset: Bool) -> [ProcessRow] {
-        if reset { processes.reset(); return [] }
-        return processes.read()
-    }
-    func historyPoints(hours: Int) -> [SystemMetric: [HistoryPoint]] { historyStore.points(hours: hours) }
-    func recordThermal(_ state: ThermalStatus) { historyStore.thermal(state) }
-    func flushHistory() -> Bool { historyStore.flush() }
+    private var batteryReadAt: TimeInterval?
 
     /// Соединение с SMC; `nil`, если недоступно.
     private lazy var smc = SMCClient()
@@ -31,11 +28,47 @@ actor SystemSampler: SystemSampling {
     /// Найденные датчики; заполняется при первом замере.
     private var sensorCatalog: SMCSensorCatalog?
 
+    /// Другой URL изолирует файлы интеграционных тестов от истории пользователя.
+    init(historyURL: URL = URL.applicationSupportDirectory.appending(path: "MacStat/history.json")) {
+        historyStore = HistoryStore(url: historyURL)
+    }
+
+    /// Полный обход процессов выполняется только по запросу открытой панели.
+    func sampleProcesses() -> [ProcessRow] {
+        processReader.read()
+    }
+
+    /// Не переносит CPU-дельты через закрытие панели или сон.
+    func resetProcesses() {
+        processReader.reset()
+    }
+
+    /// Подготавливает графики вне главного потока.
+    func historyPoints(hours: Int) -> [SystemMetric: [HistoryPoint]] {
+        historyStore.points(hours: hours)
+    }
+
+    /// Запоминает переход, а не очередной замер того же состояния.
+    func recordThermal(_ state: ThermalStatus) {
+        historyStore.thermal(state)
+    }
+
+    /// При ошибке данные остаются в памяти, а причина доступна в Console.
+    func flushHistory() -> Bool {
+        let saved = historyStore.flush()
+        if !saved {
+            logger.error("Unable to save metric history")
+        }
+        return saved
+    }
+
     /// Делает один замер всех метрик.
     func takeSnapshot() -> SystemSnapshot {
         let sensors = loadSensorCatalog()
-        if Date().timeIntervalSince(batteryReadAt) >= 5 {
-            battery = BatteryReading.read(); batteryReadAt = Date()
+        let now = ProcessInfo.processInfo.systemUptime
+        if batteryReadAt.map({ now - $0 >= 5 }) ?? true {
+            battery = batteryReader.read()
+            batteryReadAt = now
         }
         let snapshot = SystemSnapshot(
             cpuLoad: cpuLoadReader.readLoad(),
@@ -47,7 +80,9 @@ actor SystemSampler: SystemSampling {
             memoryUsage: memoryReader.readUsage(),
             battery: battery
         )
-        historyStore.record(snapshot)
+        if !historyStore.record(snapshot) {
+            logger.error("Unable to save metric history")
+        }
         return snapshot
     }
 

@@ -12,8 +12,11 @@ nonisolated struct MemoryUsage: Equatable, Sendable {
     /// Всего, байт.
     let totalBytes: UInt64
 
+    /// Системный уровень давления; nil, если sysctl недоступен.
     var pressure: MemoryPressure? = nil
+    /// Фактически занятый swap; ноль не означает проблему.
     var swapBytes: UInt64? = nil
+    /// Размер сжатых страниц в физической памяти.
     var compressedBytes: UInt64? = nil
 
     /// Доля занятой памяти 0...1.

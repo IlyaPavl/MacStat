@@ -8,40 +8,53 @@
 import Charts
 import SwiftUI
 
-/// Мини-график истории метрики с осью значений.
+/// График по реальному времени: отдельные сегменты для пропусков и пунктирные пики температур.
 struct SparklineView: View {
-    /// Данные графика.
-    let history: MetricHistory
-    /// Цвет линии и заливки.
+    let points: [HistoryPoint]
+    let hours: Int
     let tint: Color
-    /// Базовый диапазон по Y; верхняя граница растёт шагами в половину диапазона, если значения выходят за неё.
     let baseRange: ClosedRange<Double>
-    /// Подпись деления оси.
+    let showPeaks: Bool
     let axisLabel: (Double) -> String
 
     var body: some View {
-        let values = history.values
-        let yRange = yRange
-        Chart(values.indices, id: \.self) { index in
-            AreaMark(
-                x: .value("Sample", index),
-                yStart: .value("Floor", yRange.lowerBound),
-                yEnd: .value("Value", values[index])
+        let now = Date()
+        let range = yRange
+        Chart(points) { point in
+            LineMark(
+                x: .value("Time", point.date),
+                y: .value("Average", point.value),
+                series: .value("Segment", "average-\(point.segment)")
             )
-            .foregroundStyle(tint.opacity(0.12))
-            .interpolationMethod(.monotone)
+            .foregroundStyle(tint)
+            .lineStyle(StrokeStyle(lineWidth: 1.5))
 
-            LineMark(x: .value("Sample", index), y: .value("Value", values[index]))
+            PointMark(x: .value("Time", point.date), y: .value("Average", point.value))
                 .foregroundStyle(tint)
-                .lineStyle(StrokeStyle(lineWidth: 1.5))
-                .interpolationMethod(.monotone)
+                .symbolSize(3)
+
+            if showPeaks {
+                PointMark(x: .value("Time", point.date), y: .value("Peak", point.peak))
+                    .foregroundStyle(tint.opacity(0.5))
+                    .symbolSize(3)
+                LineMark(
+                    x: .value("Time", point.date),
+                    y: .value("Peak", point.peak),
+                    series: .value("Segment", "peak-\(point.segment)")
+                )
+                .foregroundStyle(tint.opacity(0.5))
+                .lineStyle(StrokeStyle(lineWidth: 1, dash: [2, 2]))
+            }
         }
-        .chartXScale(domain: 0...(history.capacity - 1))
-        .chartYScale(domain: yRange)
-        .chartXAxis(.hidden)
+        .chartXScale(domain: now.addingTimeInterval(-Double(hours) * 3600)...now)
+        .chartYScale(domain: range)
+        .chartXAxis {
+            AxisMarks(values: .automatic(desiredCount: 2)) { _ in
+                AxisValueLabel(format: .dateTime.hour().minute())
+            }
+        }
         .chartYAxis {
-            let ticks = [yRange.lowerBound, (yRange.lowerBound + yRange.upperBound) / 2, yRange.upperBound]
-            AxisMarks(position: .trailing, values: ticks) { mark in
+            AxisMarks(position: .trailing, values: [range.lowerBound, range.upperBound]) { mark in
                 AxisGridLine(stroke: StrokeStyle(lineWidth: 0.5, dash: [2, 2]))
                 AxisValueLabel {
                     if let value = mark.as(Double.self) {
@@ -54,13 +67,14 @@ struct SparklineView: View {
         }
         .chartLegend(.hidden)
         .frame(height: 56)
-        .accessibilityHidden(true)
+        .accessibilityLabel(Text("History"))
     }
 
-    /// Итоговый диапазон по Y.
+    /// Сохраняет базовую шкалу и расширяет её при значениях выше диапазона.
     private var yRange: ClosedRange<Double> {
+        let high = points.map { showPeaks ? $0.peak : $0.value }.max() ?? baseRange.upperBound
         let step = (baseRange.upperBound - baseRange.lowerBound) / 2
-        guard let high = history.values.max(), high > baseRange.upperBound, step > 0 else { return baseRange }
+        guard high > baseRange.upperBound, step > 0 else { return baseRange }
         return baseRange.lowerBound...((high / step).rounded(.up) * step)
     }
 }
