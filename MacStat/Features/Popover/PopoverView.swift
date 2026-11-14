@@ -16,8 +16,16 @@ struct PopoverView: View {
     @Environment(MonitorViewModel.self) private var viewModel
 
     var body: some View {
+        @Bindable var monitor = viewModel
+        ScrollView {
         VStack(alignment: .leading, spacing: 12) {
             PopoverHeader(chipName: viewModel.chipName)
+            Picker("History range", selection: $monitor.historyHours) {
+                Text("1 h").tag(1)
+                Text("6 h").tag(6)
+                Text("24 h").tag(24)
+                Text("48 h").tag(48)
+            }.pickerStyle(.segmented)
             GlassEffectContainer(spacing: Self.cardSpacing) {
                 Grid(horizontalSpacing: Self.cardSpacing, verticalSpacing: Self.cardSpacing) {
                     ForEach(cardRows, id: \.self) { row in
@@ -27,7 +35,10 @@ struct PopoverView: View {
                                     metric: metric,
                                     value: metric.valueText(in: viewModel.snapshot),
                                     detail: metric.detailText(in: viewModel.snapshot),
-                                    history: viewModel.history(for: metric)
+                                    history: viewModel.history(for: metric),
+                                    points: viewModel.chartPoints[metric] ?? [],
+                                    hours: viewModel.historyHours,
+                                    memoryUsage: metric == .memory ? viewModel.snapshot.memoryUsage : nil
                                 )
                                 .gridCellColumns(row.count == 1 ? 2 : 1)
                             }
@@ -35,10 +46,12 @@ struct PopoverView: View {
                     }
                 }
             }
+            DiagnosticsView()
             PopoverFooter()
         }
         .padding(12)
-        .frame(width: 340)
+        }
+        .frame(width: 340, height: 650)
         .onAppear(perform: viewModel.popoverDidAppear)
         .onDisappear(perform: viewModel.popoverDidDisappear)
     }

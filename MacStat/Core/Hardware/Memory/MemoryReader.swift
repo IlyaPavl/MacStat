@@ -35,6 +35,9 @@ nonisolated final class MemoryReader {
         let purgeablePages = UInt64(stats.purgeable_count)
         let appPages = internalPages > purgeablePages ? internalPages - purgeablePages : 0
         let usedPages = appPages + UInt64(stats.wire_count) + UInt64(stats.compressor_page_count)
-        return MemoryUsage(usedBytes: min(usedPages * pageSize, physicalMemory), totalBytes: physicalMemory)
+        var swap = xsw_usage()
+        var swapSize = MemoryLayout.size(ofValue: swap)
+        let hasSwap = sysctlbyname("vm.swapusage", &swap, &swapSize, nil, 0) == 0
+        return MemoryUsage(usedBytes: min(usedPages * pageSize, physicalMemory), totalBytes: physicalMemory, pressure: MemoryPressure.read(), swapBytes: hasSwap ? swap.xsu_used : nil, compressedBytes: UInt64(stats.compressor_page_count) * pageSize)
     }
 }

@@ -22,6 +22,8 @@ nonisolated struct SystemSnapshot: Equatable, Sendable {
     /// Использование памяти.
     var memoryUsage: MemoryUsage?
 
+    var battery: BatteryReading? = nil
+
     /// Замер без данных.
     static let empty = SystemSnapshot()
 }

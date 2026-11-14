@@ -18,6 +18,10 @@ struct MetricCard: View {
     /// Данные графика.
     let history: MetricHistory
 
+    var points: [HistoryPoint] = []
+    var hours: Int = 1
+    var memoryUsage: MemoryUsage? = nil
+
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             Label {
@@ -30,9 +34,11 @@ struct MetricCard: View {
             .foregroundStyle(.secondary)
             .lineLimit(1)
 
+            if let memoryUsage { MemoryDetailsView(usage: memoryUsage) }
+
             HStack(alignment: .firstTextBaseline, spacing: 6) {
                 value
-                    .font(.title3.weight(.semibold))
+                    .font(metric == .memory ? .caption : .title3.weight(.semibold))
                     .monospacedDigit()
                     .contentTransition(.numericText())
                     .lineLimit(1)
@@ -47,7 +53,7 @@ struct MetricCard: View {
                 }
             }
 
-            SparklineView(history: history, tint: metric.tint, baseRange: metric.chartRange, axisLabel: metric.axisLabel(for:))
+            TimelineSparkline(points: points, hours: hours, tint: metric.tint, baseRange: metric.chartRange, showPeaks: metric == .cpuTemperature || metric == .gpuTemperature || metric == .batteryTemperature)
         }
         .padding(12)
         .frame(maxWidth: .infinity, alignment: .leading)

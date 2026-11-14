@@ -10,6 +10,8 @@ import SwiftUI
 /// Точка входа: значок в меню-баре и окно настроек.
 @main
 struct MacStatApp: App {
+    @NSApplicationDelegateAdaptor(HistoryLifecycle.self) private var lifecycle
+
     /// Настройки приложения.
     @State private var settings: AppSettings
     /// Модель мониторинга.
@@ -22,8 +24,10 @@ struct MacStatApp: App {
     /// Собирает зависимости и запускает мониторинг.
     init() {
         let settings = AppSettings(defaults: .standard)
+        let sampler = SystemSampler()
+        HistoryLifecycle.sampler = sampler
         let monitor = MonitorViewModel(
-            sampler: SystemSampler(),
+            sampler: sampler,
             settings: settings,
             chipName: ChipInfo.marketingName()
         )

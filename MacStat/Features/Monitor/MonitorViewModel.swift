@@ -6,11 +6,47 @@
 //
 
 import Foundation
+import AppKit
 import Observation
 
 /// Периодически снимает метрики и готовит их для меню-бара и поповера.
 @Observable
 final class MonitorViewModel {
+    private(set) var thermalStatus = ThermalStatus(ProcessInfo.processInfo.thermalState)
+    private(set) var processes: [ProcessRow] = []
+    private(set) var chartPoints: [SystemMetric: [HistoryPoint]] = [:]
+    var historyHours = 1 {
+        didSet { Task { await refreshHistory() } }
+    }
+    @ObservationIgnored private var diagnosticTasks: [Task<Void, Never>] = []
+    @ObservationIgnored private var processTask: Task<Void, Never>?
+
+    func refreshHistory() async {
+        let hours = historyHours
+        let points = await sampler.historyPoints(hours: hours)
+        if hours == historyHours { chartPoints = points }
+    }
+
+    private func observeDiagnostics() {
+        let sampler = sampler
+        diagnosticTasks.append(Task { [weak self] in
+            await sampler.recordThermal(ThermalStatus(ProcessInfo.processInfo.thermalState))
+            for await _ in NotificationCenter.default.notifications(named: ProcessInfo.thermalStateDidChangeNotification).map({ _ in true }) {
+                guard let self else { return }
+                thermalStatus = ThermalStatus(ProcessInfo.processInfo.thermalState)
+                await sampler.recordThermal(thermalStatus)
+            }
+        })
+        diagnosticTasks.append(Task {
+            for await _ in NSWorkspace.shared.notificationCenter.notifications(named: NSWorkspace.willSleepNotification).map({ _ in true }) {
+                _ = await sampler.flushHistory()
+            }
+        })
+        diagnosticTasks.append(Task { [weak self] in
+            await self?.refreshHistory()
+        })
+    }
+
     /// Длина истории для графиков.
     private static let historyCapacity = 60
 
@@ -45,6 +81,8 @@ final class MonitorViewModel {
     }
 
     deinit {
+        processTask?.cancel()
+        diagnosticTasks.forEach { $0.cancel() }
         samplingTask?.cancel()
         settingsObservationTasks.forEach { $0.cancel() }
     }
@@ -52,6 +90,7 @@ final class MonitorViewModel {
     /// Подписывается на настройки и запускает замеры; повторный вызов ничего не делает.
     func startObservingSettings() {
         guard settingsObservationTasks.isEmpty else { return }
+        observeDiagnostics()
         let settings = settings
         settingsObservationTasks = [
             Task { [weak self] in
@@ -72,15 +111,26 @@ final class MonitorViewModel {
     /// Поповер открыт — замеряем сразу и дальше по интервалу.
     func popoverDidAppear() {
         isPopoverVisible = true
+        processTask?.cancel()
+        let sampler = sampler
+        processTask = Task { [weak self] in
+            _ = await sampler.processRows(reset: true)
+            while !Task.isCancelled {
+                let rows = await sampler.processRows(reset: false)
+                guard !Task.isCancelled else { return }
+                self?.processes = rows
+                do { try await Task.sleep(for: .seconds(2)) } catch { return }
+            }
+        }
+        Task { await refreshHistory() }
         restartSampling()
     }
 
-    /// Поповер закрыт — останавливаем замеры, если меню-бару они не нужны.
+    /// При закрытии панели прекращается только опрос процессов.
     func popoverDidDisappear() {
         isPopoverVisible = false
-        if !isSamplingNeeded {
-            stopSampling()
-        }
+        processTask?.cancel(); processTask = nil; processes = []
+        // Metric sampling continues for the persistent history.
     }
 
     /// История метрики для графика.
@@ -112,16 +162,10 @@ final class MonitorViewModel {
         return lines.joined(separator: "\n")
     }
 
-    /// Нужны ли замеры прямо сейчас.
-    private var isSamplingNeeded: Bool {
-        isPopoverVisible || settings.menuBarStyle.showsValues
-    }
-
     /// Перезапускает цикл замеров с текущим интервалом.
     private func restartSampling() {
         stopSampling()
         refreshMenuBarColumns()
-        guard isSamplingNeeded else { return }
         let interval = settings.updateInterval.duration
         let sampler = sampler
         samplingTask = Task { [weak self] in
@@ -147,6 +191,7 @@ final class MonitorViewModel {
     /// Сохраняет новый замер и дополняет историю.
     private func record(_ newSnapshot: SystemSnapshot) {
         snapshot = newSnapshot
+        if isPopoverVisible { Task { await refreshHistory() } }
         for metric in SystemMetric.allCases {
             if let value = metric.value(in: newSnapshot) {
                 histories[metric]?.append(value)
