@@ -16,14 +16,19 @@ struct MenuBarLabel: View {
     let settings: AppSettings
 
     var body: some View {
-        if let image = MenuBarImageFactory.makeImage(
-            style: settings.menuBarStyle,
-            density: settings.menuBarDensity,
-            columns: monitor.menuBarColumns
-        ) {
-            Image(nsImage: image)
-        } else {
-            Image(systemName: MenuBarImageFactory.fallbackSymbolName)
+        HStack(spacing: 3) {
+            if monitor.thermalState.needsWarning {
+                Image(systemName: "thermometer.sun.fill")
+            }
+            if let image = MenuBarImageFactory.makeImage(
+                style: settings.menuBarStyle,
+                density: settings.menuBarDensity,
+                columns: monitor.menuBarColumns
+            ) {
+                Image(nsImage: image)
+            } else {
+                Image(systemName: MenuBarImageFactory.fallbackSymbolName)
+            }
         }
     }
 }
