@@ -5,13 +5,15 @@
 //  Created by Ilya Pavlov on 19.10.2026.
 //
 
+import Foundation
 import Testing
 @testable import MacStat
 
 /// Читает настоящее железо: проверяет датчики SMC и статистику Mach на этой машине.
 struct SystemSamplerIntegrationTests {
     @Test func samplesRealSensors() async throws {
-        let sampler = SystemSampler()
+        let history = HistoryRecorder(url: FileManager.default.temporaryDirectory.appending(path: "\(UUID().uuidString)/history.json"))
+        let sampler = SystemSampler(history: history)
         _ = await sampler.takeSnapshot()
         try await Task.sleep(for: .milliseconds(300))
         let snapshot = await sampler.takeSnapshot()

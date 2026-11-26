@@ -18,18 +18,23 @@ struct MacStatApp: App {
     @State private var launchAtLogin: LaunchAtLoginViewModel
     /// Модель выбора языка.
     @State private var language: LanguageViewModel
+    /// Сохранение истории при сне и выходе.
+    @State private var historyLifecycle: HistoryLifecycle
 
     /// Собирает зависимости и запускает мониторинг.
     init() {
         let settings = AppSettings(defaults: .standard)
+        let history = HistoryRecorder(url: HistoryRecorder.defaultURL)
+        let sampler = SystemSampler(history: history)
         let monitor = MonitorViewModel(
-            sampler: SystemSampler(),
+            sampler: sampler,
             settings: settings,
             chipName: ChipInfo.marketingName()
         )
         monitor.startObservingSettings()
         _settings = State(initialValue: settings)
         _monitor = State(initialValue: monitor)
+        _historyLifecycle = State(initialValue: HistoryLifecycle(history: history))
         _launchAtLogin = State(initialValue: LaunchAtLoginViewModel(service: MainAppLaunchAtLoginService()))
         let languageStore = UserDefaultsAppLanguageStore(
             defaults: .standard,
