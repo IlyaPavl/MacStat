@@ -11,15 +11,22 @@ import Observation
 /// Периодически снимает метрики и готовит их для меню-бара и поповера.
 @Observable
 final class MonitorViewModel {
-    /// Длина истории для графиков.
-    private static let historyCapacity = 60
-
     /// Последний замер.
     private(set) var snapshot: SystemSnapshot = .empty
-    /// История значений каждой метрики для графиков.
-    private(set) var histories = Dictionary(
-        uniqueKeysWithValues: SystemMetric.allCases.map { ($0, MetricHistory(capacity: historyCapacity)) }
-    )
+    /// Тепловое состояние системы; обновляется вместе с замером.
+    private(set) var thermalState = ProcessInfo.processInfo.thermalState
+    /// Самые тяжёлые процессы последнего обхода; пусто при закрытой панели.
+    private(set) var processes = TopProcesses.empty
+    /// Точки графиков за выбранный период.
+    private(set) var chartPoints: [SystemMetric: [HistoryPoint]] = [:]
+    /// Момент, на который построены точки; правый край оси времени.
+    private(set) var chartEnd = Date()
+    /// Период графиков в часах: 1, 6, 24 или 48.
+    var historyHours = 1 {
+        didSet {
+            if historyHours != oldValue { requestChartPoints() }
+        }
+    }
     /// Элементы меню-бара со значениями; меняются только при изменении текста.
     private(set) var menuBarColumns: [MenuBarColumn] = []
 
@@ -36,6 +43,14 @@ final class MonitorViewModel {
     @ObservationIgnored private var settingsObservationTasks: [Task<Void, Never>] = []
     /// Открыт ли поповер.
     @ObservationIgnored private var isPopoverVisible = false
+    /// Обход процессов, пока панель открыта.
+    @ObservationIgnored private var processTask: Task<Void, Never>?
+    /// Запрос точек графиков.
+    @ObservationIgnored private var chartTask: Task<Void, Never>?
+    /// Когда графики пересобирались в последний раз.
+    @ObservationIgnored private var lastChartRefresh: Date?
+    /// Интервал работающего цикла замеров.
+    @ObservationIgnored private var activeInterval: Duration?
 
     /// Создаёт модель с внедрёнными зависимостями.
     init(sampler: any SystemSampling, settings: AppSettings, chipName: String) {
@@ -45,6 +60,8 @@ final class MonitorViewModel {
     }
 
     deinit {
+        processTask?.cancel()
+        chartTask?.cancel()
         samplingTask?.cancel()
         settingsObservationTasks.forEach { $0.cancel() }
     }
@@ -69,23 +86,28 @@ final class MonitorViewModel {
         ]
     }
 
-    /// Поповер открыт — замеряем сразу и дальше по интервалу.
+    /// Поповер открыт — читаем графики и процессы; замеры ускоряются до выбранного интервала.
     func popoverDidAppear() {
+        guard !isPopoverVisible else { return }
         isPopoverVisible = true
-        restartSampling()
-    }
-
-    /// Поповер закрыт — останавливаем замеры, если меню-бару они не нужны.
-    func popoverDidDisappear() {
-        isPopoverVisible = false
-        if !isSamplingNeeded {
-            stopSampling()
+        requestChartPoints()
+        startProcessLoop()
+        if samplingInterval != activeInterval {
+            restartSampling()
         }
     }
 
-    /// История метрики для графика.
-    func history(for metric: SystemMetric) -> MetricHistory {
-        histories[metric] ?? MetricHistory(capacity: Self.historyCapacity)
+    /// Поповер закрыт — процессы и графики больше не читаем; история продолжает писаться.
+    func popoverDidDisappear() {
+        isPopoverVisible = false
+        processTask?.cancel()
+        processTask = nil
+        chartTask?.cancel()
+        chartTask = nil
+        processes = .empty
+        if samplingInterval != activeInterval {
+            restartSampling()
+        }
     }
 
     /// Текстовая сводка для буфера обмена.
@@ -112,17 +134,20 @@ final class MonitorViewModel {
         return lines.joined(separator: "\n")
     }
 
-    /// Нужны ли замеры прямо сейчас.
-    private var isSamplingNeeded: Bool {
-        isPopoverVisible || settings.menuBarStyle.showsValues
+    /// История пишется всегда, поэтому замеры не останавливаются. Когда их никто не видит,
+    /// достаточно раза в 5 секунд: минутным бакетам этого хватает.
+    private var samplingInterval: Duration {
+        let configured = settings.updateInterval.duration
+        let isUnobserved = !isPopoverVisible && !settings.menuBarStyle.showsValues
+        return isUnobserved ? max(configured, .seconds(5)) : configured
     }
 
     /// Перезапускает цикл замеров с текущим интервалом.
     private func restartSampling() {
         stopSampling()
         refreshMenuBarColumns()
-        guard isSamplingNeeded else { return }
-        let interval = settings.updateInterval.duration
+        let interval = samplingInterval
+        activeInterval = interval
         let sampler = sampler
         samplingTask = Task { [weak self] in
             while true {
@@ -144,15 +169,71 @@ final class MonitorViewModel {
         samplingTask = nil
     }
 
-    /// Сохраняет новый замер и дополняет историю.
+    /// Сохраняет новый замер.
     private func record(_ newSnapshot: SystemSnapshot) {
         snapshot = newSnapshot
-        for metric in SystemMetric.allCases {
-            if let value = metric.value(in: newSnapshot) {
-                histories[metric]?.append(value)
+        let thermal = ProcessInfo.processInfo.thermalState
+        if thermal != thermalState {
+            thermalState = thermal
+        }
+        refreshChartPointsIfDue()
+        refreshMenuBarColumns()
+    }
+
+    /// Бакеты меняются раз в минуту, поэтому длинные периоды обновляем редко, а час — чаще.
+    private func refreshChartPointsIfDue() {
+        guard isPopoverVisible else { return }
+        let minimum: TimeInterval = historyHours == 1 ? 5 : 60
+        if let last = lastChartRefresh, Date().timeIntervalSince(last) < minimum { return }
+        requestChartPoints()
+    }
+
+    /// Запрашивает точки графиков; запоздавший ответ предыдущего запроса отбрасывается.
+    private func requestChartPoints() {
+        guard isPopoverVisible else { return }
+        chartTask?.cancel()
+        let now = Date()
+        lastChartRefresh = now
+        let hours = historyHours
+        let sampler = sampler
+        chartTask = Task { [weak self] in
+            let points = await sampler.historyPoints(hours: hours)
+            guard !Task.isCancelled else { return }
+            self?.setChartPoints(points, end: now)
+        }
+    }
+
+    /// Публикует точки графиков.
+    private func setChartPoints(_ points: [SystemMetric: [HistoryPoint]], end: Date) {
+        chartPoints = points
+        chartEnd = end
+    }
+
+    /// Обходит процессы раз в 2 секунды, пока панель открыта; первый замер без CPU.
+    private func startProcessLoop() {
+        processTask?.cancel()
+        processes = .empty
+        let sampler = sampler
+        processTask = Task { [weak self] in
+            await sampler.resetProcesses()
+            while !Task.isCancelled {
+                let top = await sampler.sampleProcesses()
+                // `self` не удерживается на время паузы.
+                guard !Task.isCancelled, self?.setProcesses(top) != nil else { return }
+                do {
+                    try await Task.sleep(for: .seconds(2))
+                } catch {
+                    return
+                }
             }
         }
-        refreshMenuBarColumns()
+    }
+
+    /// Публикует процессы; без изменений панель не перестраивается.
+    private func setProcesses(_ top: TopProcesses) {
+        if top != processes {
+            processes = top
+        }
     }
 
     /// Пересобирает значения меню-бара по видимым элементам.

@@ -35,6 +35,28 @@ nonisolated final class MemoryReader {
         let purgeablePages = UInt64(stats.purgeable_count)
         let appPages = internalPages > purgeablePages ? internalPages - purgeablePages : 0
         let usedPages = appPages + UInt64(stats.wire_count) + UInt64(stats.compressor_page_count)
-        return MemoryUsage(usedBytes: min(usedPages * pageSize, physicalMemory), totalBytes: physicalMemory)
+        return MemoryUsage(
+            usedBytes: min(usedPages * pageSize, physicalMemory),
+            totalBytes: physicalMemory,
+            pressure: readPressure(),
+            swapBytes: readSwapBytes(),
+            compressedBytes: UInt64(stats.compressor_page_count) * pageSize
+        )
+    }
+
+    /// Уровень давления: 1 — норма, 2 — предупреждение, 4 — критический.
+    private func readPressure() -> MemoryPressure? {
+        var level: Int32 = 0
+        var size = MemoryLayout.size(ofValue: level)
+        guard sysctlbyname("kern.memorystatus_vm_pressure_level", &level, &size, nil, 0) == 0 else { return nil }
+        return MemoryPressure(rawValue: Int(level))
+    }
+
+    /// Занятый swap; 0 — нормальное значение, а не проблема.
+    private func readSwapBytes() -> UInt64? {
+        var usage = xsw_usage()
+        var size = MemoryLayout.size(ofValue: usage)
+        guard sysctlbyname("vm.swapusage", &usage, &size, nil, 0) == 0 else { return nil }
+        return usage.xsu_used
     }
 }

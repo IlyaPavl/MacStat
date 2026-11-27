@@ -15,8 +15,16 @@ struct MetricCard: View {
     let value: Text
     /// Уточнение справа от значения.
     let detail: Text?
-    /// Данные графика.
-    let history: MetricHistory
+    /// Точки графика за выбранный период.
+    let points: [HistoryPoint]
+    /// Период графика в часах.
+    let hours: Int
+    /// Момент последнего обновления точек.
+    let chartEnd: Date
+    /// Карточка на всю ширину панели.
+    var isWide = false
+    /// Давление памяти и swap; только для карточки памяти.
+    var memoryUsage: MemoryUsage?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
@@ -47,10 +55,23 @@ struct MetricCard: View {
                 }
             }
 
-            SparklineView(history: history, tint: metric.tint, baseRange: metric.chartRange, axisLabel: metric.axisLabel(for:))
+            if let memoryUsage {
+                MemoryDetailsView(usage: memoryUsage)
+            }
+
+            SparklineView(
+                metric: metric,
+                points: points,
+                hours: hours,
+                end: chartEnd,
+                isWide: isWide,
+                tint: metric.tint,
+                baseRange: metric.chartRange,
+                showsPeaks: metric.showsHistoryPeaks && hours > 1
+            )
         }
         .padding(12)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .glassEffect(.regular.interactive().tint(metric.tint.opacity(0.12)), in: .rect(cornerRadius: 16))
+        .glassEffect(.regular.tint(metric.tint.opacity(0.12)), in: .rect(cornerRadius: 16))
     }
 }

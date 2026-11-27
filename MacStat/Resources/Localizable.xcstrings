@@ -103,6 +103,40 @@
         }
       }
     },
+    "Adapter: %@": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "المحوّل: %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Adaptador: %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Adaptateur : %@"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Адаптер: %@"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "電源轉換器：%@"
+          }
+        }
+      }
+    },
     "Add item": {
       "localizations": {
         "ar": {
@@ -133,6 +167,40 @@
           "stringUnit": {
             "state": "machine_translated",
             "value": "新增項目"
+          }
+        }
+      }
+    },
+    "Battery": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "البطارية"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Batería"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Batterie"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Батарея"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "電池"
           }
         }
       }
@@ -341,6 +409,40 @@
         }
       }
     },
+    "Charging": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "قيد الشحن"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Cargando"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "En charge"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Заряжается"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "充電中"
+          }
+        }
+      }
+    },
     "Chip power": {
       "localizations": {
         "ar": {
@@ -477,6 +579,74 @@
         }
       }
     },
+    "Compressed: %@": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "المضغوطة: %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Comprimida: %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Compressée : %@"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сжато: %@"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "已壓縮：%@"
+          }
+        }
+      }
+    },
+    "Connected to power": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "متصل بالطاقة"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Conectado a la corriente"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Branché sur secteur"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Подключено к сети"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "已接上電源"
+          }
+        }
+      }
+    },
     "Copy summary": {
       "localizations": {
         "ar": {
@@ -511,6 +681,74 @@
         }
       }
     },
+    "Critical": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "حرجة"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Crítico"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Critique"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Критическое"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "危急"
+          }
+        }
+      }
+    },
+    "Cycles: %lld": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "الدورات: %lld"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Ciclos: %lld"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Cycles : %lld"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Циклы: %lld"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "循環次數：%lld"
+          }
+        }
+      }
+    },
     "Density": {
       "localizations": {
         "ar": {
@@ -541,6 +779,74 @@
           "stringUnit": {
             "state": "machine_translated",
             "value": "密度"
+          }
+        }
+      }
+    },
+    "Discharging": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "قيد التفريغ"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Descargando"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "En décharge"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Разряжается"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "放電中"
+          }
+        }
+      }
+    },
+    "Elevated": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "مرتفعة"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Elevado"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Élevé"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Повышенное"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "偏高"
           }
         }
       }
@@ -580,6 +886,38 @@
       }
     },
     "Floor": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "الأساس"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Base"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Base"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Основание"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "基準"
+          }
+        }
+      },
       "shouldTranslate": false
     },
     "GPU temperature": {
@@ -680,6 +1018,108 @@
           "stringUnit": {
             "state": "machine_translated",
             "value": "一般"
+          }
+        }
+      }
+    },
+    "Health: %@": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "الحالة: %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Salud: %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Santé : %@"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Здоровье: %@"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "健康度：%@"
+          }
+        }
+      }
+    },
+    "High": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "عالية"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Alto"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Fort"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Высокое"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "高"
+          }
+        }
+      }
+    },
+    "History range": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "نطاق السجل"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Periodo del historial"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Période de l’historique"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Период истории"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "歷史範圍"
           }
         }
       }
@@ -888,6 +1328,142 @@
         }
       }
     },
+    "Measuring…": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "جارٍ القياس…"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Midiendo…"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Mesure…"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Измерение…"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "正在測量…"
+          }
+        }
+      }
+    },
+    "Memory pressure: critical": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "ضغط الذاكرة: حرج"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Presión de memoria: crítica"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Pression mémoire : critique"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Давление памяти: критическое"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "記憶體壓力：危急"
+          }
+        }
+      }
+    },
+    "Memory pressure: normal": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "ضغط الذاكرة: طبيعي"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Presión de memoria: normal"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Pression mémoire : normale"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Давление памяти: нормальное"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "記憶體壓力：正常"
+          }
+        }
+      }
+    },
+    "Memory pressure: warning": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "ضغط الذاكرة: تحذير"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Presión de memoria: advertencia"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Pression mémoire : avertissement"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Давление памяти: повышенное"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "記憶體壓力：警告"
+          }
+        }
+      }
+    },
     "Memory used": {
       "localizations": {
         "ar": {
@@ -1058,6 +1634,40 @@
         }
       }
     },
+    "Normal": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "طبيعية"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Normal"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Normal"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Нормальное"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "正常"
+          }
+        }
+      }
+    },
     "One metric": {
       "localizations": {
         "ar": {
@@ -1088,6 +1698,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "單一指標"
+          }
+        }
+      }
+    },
+    "Peak": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "الذروة"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Pico"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Pic"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Пик"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "峰值"
           }
         }
       }
@@ -1228,8 +1872,39 @@
         }
       }
     },
-    "Sample": {
-      "shouldTranslate": false
+    "Segment": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "المقطع"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Segmento"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Segment"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Участок"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "區段"
+          }
+        }
+      }
     },
     "Settings…": {
       "localizations": {
@@ -1333,6 +2008,40 @@
         }
       }
     },
+    "Swap: %@": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "التبديل: %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Swap: %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Swap : %@"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Swap: %@"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "交換：%@"
+          }
+        }
+      }
+    },
     "System": {
       "localizations": {
         "ar": {
@@ -1367,6 +2076,74 @@
         }
       }
     },
+    "Thermal state: %@": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "الحالة الحرارية: %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Estado térmico: %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "État thermique : %@"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Тепловое состояние: %@"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "溫度狀態：%@"
+          }
+        }
+      }
+    },
+    "Time": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "الوقت"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Hora"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Heure"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Время"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "時間"
+          }
+        }
+      }
+    },
     "Top": {
       "localizations": {
         "ar": {
@@ -1397,6 +2174,74 @@
           "stringUnit": {
             "state": "translated",
             "value": "頂部"
+          }
+        }
+      }
+    },
+    "Top CPU": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "الأعلى استخدامًا للمعالج"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Top CPU"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Top CPU"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Топ по CPU"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "CPU 用量最高"
+          }
+        }
+      }
+    },
+    "Top memory": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "الأعلى استخدامًا للذاكرة"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Top memoria"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Top mémoire"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Топ по памяти"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "記憶體用量最高"
           }
         }
       }
@@ -1504,6 +2349,38 @@
       }
     },
     "Value": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "القيمة"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Valor"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Valeur"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Значение"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "數值"
+          }
+        }
+      },
       "shouldTranslate": false
     },
     "fan %@ rpm": {
@@ -1536,6 +2413,40 @@
           "stringUnit": {
             "state": "machine_translated",
             "value": "風扇%@ rpm"
+          }
+        }
+      }
+    },
+    "macOS heat signal. It does not mean the clock speed is already reduced.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "إشارة من macOS بشأن الحرارة. لا تعني أن سرعة المعالج قد انخفضت بالفعل."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Señal de calor de macOS. No significa que la frecuencia ya se haya reducido."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Signal de chauffe de macOS. Cela ne signifie pas que la fréquence est déjà réduite."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сигнал macOS о нагреве. Это не значит, что частоты уже снижены."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "macOS 的發熱訊號，不代表時脈已經降低。"
           }
         }
       }
